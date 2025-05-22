@@ -1,10 +1,27 @@
 {
   "Stage 0": [
-    { "name": "Datuu", "tag": "Stage 0" },
-    { "name": "", "tag": "" }
+    { "name": "Datuu", "tag": "S0" }
   ],
-  "Stage 2": [],
-  "Stage 3": [],
-  "Stage 4": [],
-  "Stage 5": []
+  "Stage 1": [
+    { "name": "Abvolter", "tag": "S1" },
+    { "name": "Sigmataur", "tag": "S1" },
+    { "name": "Zen", "tag": "S1" },
+    { "name": "Sol", "tag": "S1" },
+    { "name": "Nika", "tag": "S1" },
+    { "name": "Tota", "tag": "S1" },
+    { "name": "xuci", "tag": "S1" }
+  ],
+  "Stage 2": [
+    { "name": "Ein", "tag": "S2" },
+    { "name": "Davida", "tag": "S2" },
+    { "name": "Kai", "tag": "S2" },
+    { "name": "Vaxo", "tag": "S2" },
+    { "name": "Shingus", "tag": "S2" },
+    { "name": "Urban", "tag": "S2" },
+    { "name": "Ika", "tag": "S2" },
+    { "name": "Luka", "tag": "S2" },
+    { "name": "BoogeyMan", "tag": "S2" },
+    { "name": "Kaxo", "tag": "S2" }
+  ],
+  "Stage 3": []
 }
