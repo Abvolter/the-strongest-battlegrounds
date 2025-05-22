@@ -33,48 +33,77 @@ function showView(view) {
   } else if (view === 'overall') {
     const allPlayers = [];
 
-    Object.keys(playerData)
-      .sort((a, b) => parseInt(a.replace("Stage ", "")) - parseInt(b.replace("Stage ", "")))
-      .forEach(stage => {
-        playerData[stage].forEach((p, i) => {
-          allPlayers.push({ ...p, stage, userId: p.userId || (100 + i) }); // placeholder IDs
+    for (const [stage, players] of Object.entries(playerData)) {
+      players.forEach(p => {
+        const pts = calculatePoints(stage, p.tier);
+        allPlayers.push({
+          name: p.name,
+          stage: stage,
+          tier: p.tier || '',
+          points: pts
         });
       });
+    }
 
-    allPlayers.forEach(p => {
+    // Sort players:
+    allPlayers.sort((a, b) => {
+      // Stage 0 first
+      if (a.stage === 'Stage 0' && b.stage !== 'Stage 0') return -1;
+      if (b.stage === 'Stage 0' && a.stage !== 'Stage 0') return 1;
+      // Then by points descending
+      return b.points - a.points;
+    });
+
+    allPlayers.forEach((p, i) => {
       const row = document.createElement('div');
       row.className = 'player-row';
-      row.style.background = getStageColor(p.stage);
       row.style.display = 'flex';
+      row.style.justifyContent = 'space-between';
       row.style.alignItems = 'center';
-      row.style.padding = '10px';
-      row.style.borderRadius = '8px';
+      row.style.padding = '10px 20px';
       row.style.margin = '5px 0';
+      row.style.border = '1px solid #ccc';
+      row.style.borderRadius = '12px';
+      row.style.background = getStageColor(p.stage);
 
-      const avatar = document.createElement('img');
-      avatar.src = `https://www.roblox.com/headshot-thumbnail/image?userId=${p.userId}&width=100&height=100&format=png`;
-      avatar.alt = `${p.name}'s avatar`;
-      avatar.style.width = '50px';
-      avatar.style.height = '50px';
-      avatar.style.borderRadius = '50%';
-      avatar.style.marginRight = '10px';
+      const name = document.createElement('div');
+      name.innerHTML = `<strong>${i + 1}. ${p.name}</strong>`;
 
-      const info = document.createElement('div');
-      info.innerHTML = `<strong>${p.name}</strong><br>Stage: ${p.stage}`;
+      const score = document.createElement('div');
+      score.textContent = `${p.points} pts`;
 
-      row.appendChild(avatar);
-      row.appendChild(info);
+      row.appendChild(name);
+      row.appendChild(score);
       content.appendChild(row);
     });
   }
 }
 
+function calculatePoints(stage, tier = '') {
+  if (stage === 'Stage 0') return 20;
+  if (stage === 'Stage 2' || stage === 'Stage 3') return 0;
+
+  const tierPoints = {
+    'High Strong': 15,
+    'High Solid': 14,
+    'High Weak': 13,
+    'Mid Strong': 12,
+    'Mid Solid': 11,
+    'Mid Weak': 10,
+    'Low Strong': 9,
+    'Low Solid': 8,
+    'Low Weak': 7
+  };
+
+  return tierPoints[tier] || 0;
+}
+
 function getStageColor(stage) {
   switch (stage) {
-    case 'Stage 0': return '#ffb3ba'; // soft red
-    case 'Stage 1': return '#bae1ff'; // soft blue
-    case 'Stage 2': return '#baffc9'; // soft green
-    case 'Stage 3': return '#ffffba'; // soft yellow
-    default: return '#eeeeee';
+    case 'Stage 0': return '#ffd6d6';
+    case 'Stage 1': return '#d6eaff';
+    case 'Stage 2': return '#d6ffd6';
+    case 'Stage 3': return '#ffffd6';
+    default: return '#f0f0f0';
   }
 }
