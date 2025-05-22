@@ -3,13 +3,13 @@
     { "name": "Datuu", "tag": "S0" }
   ],
   "Stage 1": [
-    { "name": "Abvolter", "tag": "S1" },
-    { "name": "Sigmataur", "tag": "S1" },
-    { "name": "Zen", "tag": "S1" },
-    { "name": "Sol", "tag": "S1" },
-    { "name": "Nika", "tag": "S1" },
-    { "name": "Tota", "tag": "S1" },
-    { "name": "xuci", "tag": "S1" }
+    { "name": "Abvolter", "tag": "S1", "tier": "Low Weak" },
+    { "name": "Sigmataur", "tag": "S1", "tier": "Low Solid" },
+    { "name": "Zen", "tag": "S1", "tier": "Mid Weak" },
+    { "name": "Sol", "tag": "S1", "tier": "Mid Strong" },
+    { "name": "Nika", "tag": "S1", "tier": "High Weak" },
+    { "name": "Tota", "tag": "S1", "tier": "Mid Weak" },
+    { "name": "xuci", "tag": "S1", "tier": "Mid Weak" }
   ],
   "Stage 2": [
     { "name": "Ein", "tag": "S2" },
