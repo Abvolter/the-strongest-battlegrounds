@@ -1,10 +1,8 @@
 {
-  "Stage 1": [
-    { "name": "Dominator", "tag": "S1" },
-    { "name": "BeastMaster", "tag": "S1" }
+  "Stage 0": [
+    { "name": "Datuu", "tag": "S1" },
   ],
+  "Stage 1": [],
   "Stage 2": [],
   "Stage 3": [],
-  "Stage 4": [],
-  "Stage 5": []
 }
