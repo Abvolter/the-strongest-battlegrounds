@@ -1,9 +1,10 @@
 {
   "Stage 0": [
-    { "name": "Datuu", "tag": "S1" }
+    { "name": "Datuu", "tag": "Stage 0" },
+    { "name": "", "tag": "" }
   ],
-  "Stage 1": [],
   "Stage 2": [],
-  "Stage 3": []
+  "Stage 3": [],
+  "Stage 4": [],
+  "Stage 5": []
 }
-
