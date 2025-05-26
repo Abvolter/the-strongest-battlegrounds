@@ -39,6 +39,112 @@
             margin-bottom: 0.5rem;
         }
 
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tier-column {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .tier-header {
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stage-0-header {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+        }
+
+        .stage-1-header {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        .stage-2-header {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+        }
+
+        .stage-3-header {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        }
+
+        .tier-players {
+            padding: 1rem;
+        }
+
+        .tier-player {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tier-player:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .tier-player:last-child {
+            margin-bottom: 0;
+        }
+
+        .tier-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .tier-player-name {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .empty-tier {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            color: #666;
+            font-style: italic;
+            border: 2px dashed #333;
+            border-radius: 8px;
+            margin: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .tier-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tier-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .description {
             color: #bbb;
             max-width: 600px;
@@ -51,6 +157,185 @@
             justify-content: center;
             margin: 2rem 0;
             gap: 1rem;
+        }
+
+        .admin-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .admin-content {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #444;
+            padding-bottom: 1rem;
+        }
+
+        .admin-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .close-btn:hover {
+            background: #c0392b;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #ecf0f1;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #444;
+            border-radius: 5px;
+            background: #34495e;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .player-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid #444;
+            border-radius: 5px;
+            padding: 1rem;
+            background: #2c3e50;
+        }
+
+        .player-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: #34495e;
+            border-radius: 5px;
+        }
+
+        .player-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .player-info-admin {
+            flex: 1;
+        }
+
+        .player-name-admin {
+            font-weight: 600;
+            color: white;
+        }
+
+        .player-stage-admin {
+            font-size: 0.9rem;
+            color: #bdc3c7;
         }
 
         .tab {
