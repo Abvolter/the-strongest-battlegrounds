@@ -55,21 +55,23 @@ body {
     letter-spacing: 1px;
 }
 
+/* Base colors for Stage headers */
 .stage-0-header {
-    background: linear-gradient(45deg, #8e44ad, #9b59b6);
+    background: linear-gradient(45deg, #8e44ad, #9b59b6); /* Purple */
 }
 
 .stage-1-header {
-    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    background: linear-gradient(45deg, #e74c3c, #c0392b); /* Red */
 }
 
 .stage-2-header {
-    background: linear-gradient(45deg, #3498db, #2980b9);
+    background: linear-gradient(45deg, #3498db, #2980b9); /* Blue */
 }
 
 .stage-3-header {
-    background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+    background: linear-gradient(45deg, #95a5a6, #7f8c8d); /* Grey */
 }
+
 
 .tier-players {
     padding: 1rem;
@@ -109,7 +111,7 @@ body {
     flex-shrink: 0;
 }
 
-/* New styles for player name and stage in Tier View */
+/* New styles for player name and stage in Stages View */
 .tier-details {
     display: flex;
     flex-direction: column; /* Stack name and stage vertically */
@@ -477,44 +479,41 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: white; /* Ensure text color is white for all badges */
 }
 
-.stage-0 {
-    background: linear-gradient(45deg, #8e44ad, #9b59b6);
-    box-shadow: 0 0 15px rgba(142, 68, 173, 0.5);
-}
+/* Stage 0 Subdivisions (Purple tones) */
+.stage-0-high-strong { background: linear-gradient(45deg, #a864d0, #b776dc); }
+.stage-0-high-solid { background: linear-gradient(45deg, #9b59b6, #a561c2); }
+.stage-0-mid-strong { background: linear-gradient(45deg, #8e44ad, #984ea6); }
+.stage-0-mid-solid { background: linear-gradient(45deg, #813a9d, #8b44a7); }
+.stage-0-low-strong { background: linear-gradient(45deg, #74308e, #7e3a98); }
+.stage-0-low-solid { background: linear-gradient(45deg, #67267f, #71308a); }
 
-.stage-1-high-strong {
-    background: linear-gradient(45deg, #e74c3c, #c0392b);
-}
+/* Stage 1 Subdivisions (Red/Orange tones) */
+.stage-1-high-strong { background: linear-gradient(45deg, #f76251, #e74c3c); }
+.stage-1-high-solid { background: linear-gradient(45deg, #e67e22, #d35400); }
+.stage-1-mid-strong { background: linear-gradient(45deg, #f39c12, #e67e22); }
+.stage-1-mid-solid { background: linear-gradient(45deg, #f1c40f, #f39c12); }
+.stage-1-low-strong { background: linear-gradient(45deg, #d84315, #bf360c); } /* Darker Orange */
+.stage-1-low-solid { background: linear-gradient(45deg, #bf360c, #ab2e09); } /* Even Darker Orange */
 
-.stage-1-high-solid {
-    background: linear-gradient(45deg, #e67e22, #d35400);
-}
+/* Stage 2 Subdivisions (Blue tones) */
+.stage-2-high-strong { background: linear-gradient(45deg, #5dade2, #3498db); }
+.stage-2-high-solid { background: linear-gradient(45deg, #2980b9, #2573a6); }
+.stage-2-mid-strong { background: linear-gradient(45deg, #2874a6, #21618c); }
+.stage-2-mid-solid { background: linear-gradient(45deg, #1f618d, #1a5276); }
+.stage-2-low-strong { background: linear-gradient(45deg, #17456d, #143d60); }
+.stage-2-low-solid { background: linear-gradient(45deg, #103657, #0c2c4d); }
 
-.stage-1-mid-strong {
-    background: linear-gradient(45deg, #f39c12, #e67e22);
-}
+/* Stage 3 Subdivisions (Grey tones) */
+.stage-3-high-strong { background: linear-gradient(45deg, #bdc3c7, #95a5a6); }
+.stage-3-high-solid { background: linear-gradient(45deg, #7f8c8d, #707b7c); }
+.stage-3-mid-strong { background: linear-gradient(45deg, #6c7778, #5f6667); }
+.stage-3-mid-solid { background: linear-gradient(45deg, #525c5d, #464e4e); }
+.stage-3-low-strong { background: linear-gradient(45deg, #3d4344, #333839); }
+.stage-3-low-solid { background: linear-gradient(45deg, #2e3233, #252829); }
 
-.stage-1-mid-solid {
-    background: linear-gradient(45deg, #f1c40f, #f39c12);
-}
-
-.stage-1-low-strong {
-    background: linear-gradient(45deg, #2ecc71, #27ae60);
-}
-
-.stage-1-low-solid {
-    background: linear-gradient(45deg, #1abc9c, #16a085);
-}
-
-.stage-2 {
-    background: linear-gradient(45deg, #3498db, #2980b9);
-}
-
-.stage-3 {
-    background: linear-gradient(45deg, #95a5a6, #7f8c8d);
-}
 
 .tab-content {
     display: none; /* Hidden by default */
