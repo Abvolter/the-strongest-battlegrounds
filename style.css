@@ -485,34 +485,46 @@ body {
 /* Stage 0 Subdivisions (Purple tones) */
 .stage-0-high-strong { background: linear-gradient(45deg, #a864d0, #b776dc); }
 .stage-0-high-solid { background: linear-gradient(45deg, #9b59b6, #a561c2); }
-.stage-0-mid-strong { background: linear-gradient(45deg, #8e44ad, #984ea6); }
-.stage-0-mid-solid { background: linear-gradient(45deg, #813a9d, #8b44a7); }
-.stage-0-low-strong { background: linear-gradient(45deg, #74308e, #7e3a98); }
-.stage-0-low-solid { background: linear-gradient(45deg, #67267f, #71308a); }
+.stage-0-high-weak { background: linear-gradient(45deg, #8e44ad, #984ea6); } /* NEW - Slightly darker purple */
+.stage-0-mid-strong { background: linear-gradient(45deg, #813a9d, #8b44a7); }
+.stage-0-mid-solid { background: linear-gradient(45deg, #74308e, #7e3a98); }
+.stage-0-mid-weak { background: linear-gradient(45deg, #67267f, #71308a); } /* NEW - Darker purple */
+.stage-0-low-strong { background: linear-gradient(45deg, #5a1c70, #632679); }
+.stage-0-low-solid { background: linear-gradient(45deg, #4d1261, #561b69); }
+.stage-0-low-weak { background: linear-gradient(45deg, #400852, #49105a); } /* NEW - Even darker purple */
 
 /* Stage 1 Subdivisions (Red/Orange tones) */
 .stage-1-high-strong { background: linear-gradient(45deg, #f76251, #e74c3c); }
 .stage-1-high-solid { background: linear-gradient(45deg, #e67e22, #d35400); }
+.stage-1-high-weak { background: linear-gradient(45deg, #c0392b, #a53225); } /* NEW - More distinct red */
 .stage-1-mid-strong { background: linear-gradient(45deg, #f39c12, #e67e22); }
-.stage-1-mid-solid { background: linear-gradient(45deg, #f1c40f, #f39c12); }
-.stage-1-low-strong { background: linear-gradient(45deg, #d84315, #bf360c); } /* Darker Orange */
-.stage-1-low-solid { background: linear-gradient(45deg, #bf360c, #ab2e09); } /* Even Darker Orange */
+.stage-1-mid-solid { background: linear-gradient(45deg, #d46c0a, #bb5a09); } /* Adjusted orange */
+.stage-1-mid-weak { background: linear-gradient(45deg, #b04606, #9c3c05); } /* NEW - Darker orange */
+.stage-1-low-strong { background: linear-gradient(45deg, #9c3c05, #8a3404); }
+.stage-1-low-solid { background: linear-gradient(45deg, #8a3404, #782d03); }
+.stage-1-low-weak { background: linear-gradient(45deg, #782d03, #662602); } /* NEW - Even darker orange */
 
 /* Stage 2 Subdivisions (Blue tones) */
 .stage-2-high-strong { background: linear-gradient(45deg, #5dade2, #3498db); }
 .stage-2-high-solid { background: linear-gradient(45deg, #2980b9, #2573a6); }
-.stage-2-mid-strong { background: linear-gradient(45deg, #2874a6, #21618c); }
-.stage-2-mid-solid { background: linear-gradient(45deg, #1f618d, #1a5276); }
-.stage-2-low-strong { background: linear-gradient(45deg, #17456d, #143d60); }
-.stage-2-low-solid { background: linear-gradient(45deg, #103657, #0c2c4d); }
+.stage-2-high-weak { background: linear-gradient(45deg, #21618c, #1e557b); } /* NEW - Slightly darker blue */
+.stage-2-mid-strong { background: linear-gradient(45deg, #1a5276, #17456d); }
+.stage-2-mid-solid { background: linear-gradient(45deg, #143d60, #113653); }
+.stage-2-mid-weak { background: linear-gradient(45deg, #0e2f47, #0b283c); } /* NEW - Darker blue */
+.stage-2-low-strong { background: linear-gradient(45deg, #082231, #061c2a); }
+.stage-2-low-solid { background: linear-gradient(45deg, #051821, #04141b); }
+.stage-2-low-weak { background: linear-gradient(45deg, #031015, #020c10); } /* NEW - Even darker blue */
 
 /* Stage 3 Subdivisions (Grey tones) */
 .stage-3-high-strong { background: linear-gradient(45deg, #bdc3c7, #95a5a6); }
 .stage-3-high-solid { background: linear-gradient(45deg, #7f8c8d, #707b7c); }
-.stage-3-mid-strong { background: linear-gradient(45deg, #6c7778, #5f6667); }
-.stage-3-mid-solid { background: linear-gradient(45deg, #525c5d, #464e4e); }
-.stage-3-low-strong { background: linear-gradient(45deg, #3d4344, #333839); }
-.stage-3-low-solid { background: linear-gradient(45deg, #2e3233, #252829); }
+.stage-3-high-weak { background: linear-gradient(45deg, #6c7778, #5f6667); } /* NEW - Slightly darker grey */
+.stage-3-mid-strong { background: linear-gradient(45deg, #525c5d, #464e4e); }
+.stage-3-mid-solid { background: linear-gradient(45deg, #3d4344, #333839); }
+.stage-3-mid-weak { background: linear-gradient(45deg, #2e3233, #252829); } /* NEW - Darker grey */
+.stage-3-low-strong { background: linear-gradient(45deg, #1f2223, #181b1c); }
+.stage-3-low-solid { background: linear-gradient(45deg, #141617, #0e0f0f); }
+.stage-3-low-weak { background: linear-gradient(45deg, #0b0c0c, #070808); } /* NEW - Even darker grey */
 
 
 .tab-content {
