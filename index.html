@@ -1,92 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>The Strongest Battlegrounds Stages</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      color: #222;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Rankings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    h1 {
-      margin-bottom: 20px;
-    }
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
 
-    .tabs {
-      margin-bottom: 20px;
-    }
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
 
-    button {
-      margin: 0 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: 1px solid #aaa;
-      border-radius: 6px;
-      background-color: #f0f0f0;
-      cursor: pointer;
-    }
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
 
-    #content {
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: left;
-    }
+        .subtitle {
+            font-size: 1.5rem;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
 
-    .player-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 16px;
-      margin: 6px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      color: #333;
-    }
+        .description {
+            color: #bbb;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
 
-    .player-name {
-      font-size: 16px;
-    }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            gap: 1rem;
+        }
 
-    .player-score {
-      font-size: 14px;
-      color: #666;
-    }
+        .tab {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
 
-    /* Optional: Style for "Stages" view */
-    .stage-column {
-      margin-bottom: 30px;
-    }
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
 
-    .stage-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-      font-size: 18px;
-    }
+        .tab.active {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border-color: #ffd700;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+        }
 
-    .player {
-      margin: 5px 0;
-      padding: 5px 10px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-    }
-  </style>
-</head>
-<body>
-  <h1>The Strongest Battlegrounds</h1>
-  <div class="tabs">
-    <button onclick="showView('stages')">Stages</button>
-    <button onclick="showView('overall')">Overall</button>
-  </div>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
-  <div id="content"></div>
+        .leaderboard {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
 
-  <script src="script.js"></script>
-</body>
-</html>
+        .leaderboard-header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 80px 1fr 200px;
+            gap: 1rem;
+            align-items: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .player-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 200px;
+            gap: 1rem;
+            padding: 1.5rem;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .player-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .player-row:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .rank.top1 {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .rank.top2 {
+            background: linear-gradient(45deg, #c0c0c0, #e8e8e8);
+            color: #000;
+        }
+
+        .rank.top3 {
+            background: linear-gradient(45deg, #cd7f32, #b8860b);
+            color: white;
+        }
+
+        .rank.other {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .player-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .player-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .stage-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stage-0 {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            box-shadow: 0 0 15px rgba(142, 68, 173, 0.5);
+        }
+
+        .stage-1-high-strong {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        .stage-1-high-solid {
+            background: linear-gradient(45deg, #e67e22, #d35400);
+        }
+
+        .stage-1-mid-strong {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+        }
+
+        .stage-1-mid-solid {
+            background: linear-gradient(45deg, #f1c40f, #f39c12);
+        }
+
+        .stage-1-low-strong {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+
+        .stage-1-low-solid {
+            background: linear-gradient(45deg, #1abc9c, #16a085);
+        }
+
+        .stage-2 {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+        }
+
+        .stage-3 {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .leaderboard-header,
+            .player-row {
+                grid-template-columns: 60px 1fr;
+                gap: 0.5rem;
+            }
+
+            .stage-info {
+                grid-column: 1 / -1;
+                margin-top: 0.5rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
