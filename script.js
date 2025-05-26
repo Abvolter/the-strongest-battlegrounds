@@ -1,559 +1,377 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+let players = []; // Array to store player objects
 
-body {
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
-}
+// --- Helper Functions ---
 
-.header {
-    text-align: center;
-    padding: 2rem 0;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.logo {
-    font-size: 3rem;
-    font-weight: bold;
-    background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 1rem;
-}
-
-.subtitle {
-    font-size: 1.5rem;
-    color: #ffd700;
-    margin-bottom: 0.5rem;
-}
-
-.tier-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.tier-column {
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 15px;
-    overflow: hidden;
-    min-height: 400px; /* Ensures columns have height even if empty */
-}
-
-.tier-header {
-    padding: 1rem;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.stage-0-header {
-    background: linear-gradient(45deg, #8e44ad, #9b59b6);
-}
-
-.stage-1-header {
-    background: linear-gradient(45deg, #e74c3c, #c0392b);
-}
-
-.stage-2-header {
-    background: linear-gradient(45deg, #3498db, #2980b9);
-}
-
-.stage-3-header {
-    background: linear-gradient(45deg, #95a5a6, #7f8c8d);
-}
-
-.tier-players {
-    padding: 1rem;
-}
-
-.tier-player {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.8rem;
-    margin-bottom: 0.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.tier-player:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(5px);
-}
-
-.tier-player:last-child {
-    margin-bottom: 0;
-}
-
-.tier-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    font-weight: bold;
-    flex-shrink: 0;
-}
-
-.tier-player-name {
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.empty-tier {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100px;
-    color: #666;
-    font-style: italic;
-    border: 2px dashed #333;
-    border-radius: 8px;
-    margin: 1rem;
-}
-
-@media (max-width: 1024px) {
-    .tier-grid {
-        grid-template-columns: repeat(2, 1fr);
+// Loads players from localStorage
+function loadPlayers() {
+    const storedPlayers = localStorage.getItem('playerRankings');
+    if (storedPlayers) {
+        players = JSON.parse(storedPlayers);
     }
 }
 
-@media (max-width: 768px) {
-    .tier-grid {
-        grid-template-columns: 1fr;
+// Saves players to localStorage
+function savePlayers() {
+    localStorage.setItem('playerRankings', JSON.stringify(players));
+}
+
+// Generates initials for player avatar
+function getInitials(name) {
+    return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+}
+
+// Combines stage and sub-stage into a readable string
+function getFullStageText(stage, stage1Sub) {
+    if (stage === 'stage-0') return 'Stage 0 - Legendary';
+    if (stage === 'stage-1') {
+        if (stage1Sub) {
+            const subText = stage1Sub.replace('-', ' '); // e.g., "high-strong" -> "high strong"
+            return `Stage 1 - ${subText.charAt(0).toUpperCase() + subText.slice(1)}`;
+        }
+        return 'Stage 1 - Elite'; // Fallback if no sub-stage selected for Stage 1
     }
+    if (stage === 'stage-2') return 'Stage 2 - Skilled';
+    if (stage === 'stage-3') return 'Stage 3 - Novice';
+    return 'Unknown Stage';
 }
 
-.description {
-    color: #bbb;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-.tabs {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0;
-    gap: 1rem;
-}
-
-.admin-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: linear-gradient(45deg, #ff6b35, #f7931e);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 600;
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-
-.admin-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-}
-
-.admin-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.9);
-    display: none; /* Hidden by default */
-    z-index: 2000;
-    overflow-y: auto;
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    padding: 2rem;
-}
-
-.admin-panel.active {
-    display: flex; /* Show when active */
-}
-
-.admin-content {
-    background: linear-gradient(135deg, #2c3e50, #34495e);
-    padding: 2rem;
-    border-radius: 15px;
-    max-width: 600px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    border-bottom: 2px solid #444;
-    padding-bottom: 1rem;
-}
-
-.admin-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffd700;
-}
-
-.close-btn {
-    background: #e74c3c;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.close-btn:hover {
-    background: #c0392b;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #ecf0f1;
-}
-
-.form-input, .form-select {
-    width: 100%;
-    padding: 0.8rem;
-    border: 2px solid #444;
-    border-radius: 5px;
-    background: #34495e;
-    color: white;
-    font-size: 1rem;
-}
-
-.form-input:focus, .form-select:focus {
-    outline: none;
-    border-color: #3498db;
-}
-
-.btn {
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.btn-primary {
-    background: #3498db;
-    color: white;
-}
-
-.btn-primary:hover {
-    background: #2980b9;
-}
-
-.btn-success {
-    background: #27ae60;
-    color: white;
-}
-
-.btn-success:hover {
-    background: #219a52;
-}
-
-.btn-danger {
-    background: #e74c3c;
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #c0392b;
-}
-
-.player-list {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 2px solid #444;
-    border-radius: 5px;
-    padding: 1rem;
-    background: #2c3e50;
-}
-
-.player-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem;
-    margin-bottom: 0.5rem;
-    background: #34495e;
-    border-radius: 5px;
-}
-
-.player-item:last-child {
-    margin-bottom: 0;
-}
-
-.player-info-admin {
-    flex: 1;
-}
-
-.player-name-admin {
-    font-weight: 600;
-    color: white;
-}
-
-.player-stage-admin {
-    font-size: 0.9rem;
-    color: #bdc3c7;
-}
-
-.tab {
-    padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid transparent;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.tab:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-}
-
-.tab.active {
-    background: linear-gradient(45deg, #ff6b35, #f7931e);
-    border-color: #ffd700;
-    box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.leaderboard {
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.leaderboard-header {
-    background: linear-gradient(45deg, #2c3e50, #34495e);
-    padding: 1.5rem;
-    display: grid;
-    grid-template-columns: 80px 1fr 200px;
-    gap: 1rem;
-    align-items: center;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.player-row {
-    display: grid;
-    grid-template-columns: 80px 1fr 200px;
-    gap: 1rem;
-    padding: 1.5rem;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.player-row:hover {
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateX(5px);
-}
-
-.player-row:last-child {
-    border-bottom: none;
-}
-
-.rank {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-}
-
-.rank.top1 {
-    background: linear-gradient(45deg, #ffd700, #ffed4e);
-    color: #000;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-}
-
-.rank.top2 {
-    background: linear-gradient(45deg, #c0c0c0, #e8e8e8);
-    color: #000;
-}
-
-.rank.top3 {
-    background: linear-gradient(45deg, #cd7f32, #b8860b);
-    color: white;
-}
-
-.rank.other {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.player-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.player-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.player-details h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.3rem;
-}
-
-.stage-badge {
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.stage-0 {
-    background: linear-gradient(45deg, #8e44ad, #9b59b6);
-    box-shadow: 0 0 15px rgba(142, 68, 173, 0.5);
-}
-
-.stage-1-high-strong {
-    background: linear-gradient(45deg, #e74c3c, #c0392b);
-}
-
-.stage-1-high-solid {
-    background: linear-gradient(45deg, #e67e22, #d35400);
-}
-
-.stage-1-mid-strong {
-    background: linear-gradient(45deg, #f39c12, #e67e22);
-}
-
-.stage-1-mid-solid {
-    background: linear-gradient(45deg, #f1c40f, #f39c12);
-}
-
-.stage-1-low-strong {
-    background: linear-gradient(45deg, #2ecc71, #27ae60);
-}
-
-.stage-1-low-solid {
-    background: linear-gradient(45deg, #1abc9c, #16a085);
-}
-
-.stage-2 {
-    background: linear-gradient(45deg, #3498db, #2980b9);
-}
-
-.stage-3 {
-    background: linear-gradient(45deg, #95a5a6, #7f8c8d);
-}
-
-.tab-content {
-    display: none; /* Hidden by default */
-}
-
-.tab-content.active {
-    display: block; /* Show when active */
-}
-
-@media (max-width: 768px) {
-    .leaderboard-header,
-    .player-row {
-        grid-template-columns: 60px 1fr; /* Rank and Player info */
-        gap: 0.5rem;
+// Returns the CSS class for the stage badge
+function getStageClass(stage, stage1Sub) {
+    if (stage === 'stage-0') return 'stage-0';
+    if (stage === 'stage-1') {
+        // Ensure the sub-stage part exists to form a valid class
+        return stage1Sub ? `stage-1-${stage1Sub}` : 'stage-1-high-strong'; // Default to a class if sub-stage is missing
     }
+    if (stage === 'stage-2') return 'stage-2';
+    if (stage === 'stage-3') return 'stage-3';
+    return ''; // Return empty string for unknown stage
+}
 
-    .stage-info {
-        grid-column: 1 / -1; /* Make stage info span full width below player name */
-        margin-top: 0.5rem;
-        text-align: right; /* Align badge to the right */
-    }
+// Returns a numerical rank for sorting players (lower number = higher rank)
+function getStageRank(stage, stage1Sub) {
+    const rankings = {
+        'stage-0': 1,
+        'stage-1-high-strong': 2,
+        'stage-1-high-solid': 3,
+        // No 'stage-1-high-weak' in your CSS, so removed.
+        'stage-1-mid-strong': 4,
+        'stage-1-mid-solid': 5,
+        // No 'stage-1-mid-weak' in your CSS, so removed.
+        'stage-1-low-strong': 6,
+        'stage-1-low-solid': 7,
+        // No 'stage-1-low-weak' in your CSS, so removed.
+        'stage-2': 8,
+        'stage-3': 9
+    };
     
-    .player-avatar {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
+    // Construct the key for Stage 1 correctly
+    if (stage === 'stage-1' && stage1Sub) {
+        return rankings[`${stage}-${stage1Sub}`] || 999;
     }
+    return rankings[stage] || 999; // Fallback for invalid stage or no sub-stage
+}
 
-    .player-details h3 {
-        font-size: 1.1rem;
+// --- Admin Panel Functions ---
+
+// Toggles the visibility of the admin panel
+function toggleAdmin() {
+    const panel = document.getElementById('adminPanel');
+    panel.classList.toggle('active');
+    // Clear form and update list when opening/closing
+    if (!panel.classList.contains('active')) {
+        clearForm();
     }
+    updatePlayerList(); // Always update admin list when toggling
+}
 
-    .stage-badge {
-        font-size: 0.8rem;
-        padding: 0.2rem 0.6rem;
-    }
+// Shows/hides Stage 1 subdivision options based on selected stage
+function updateStageOptions() {
+    const stageSelect = document.getElementById('playerStage');
+    const stage1OptionsDiv = document.getElementById('stage1Options');
+    const stage1SubSelect = document.getElementById('stage1Sub');
 
-    .logo {
-        font-size: 2rem;
-    }
-
-    .tabs {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .tab {
-        width: 90%; /* Make tabs wider on small screens */
-        text-align: center;
-        padding: 0.8rem 1rem;
-    }
-
-    .container {
-        padding: 0 1rem;
+    if (stageSelect.value === 'stage-1') {
+        stage1OptionsDiv.style.display = 'block';
+        stage1SubSelect.required = true;
+    } else {
+        stage1OptionsDiv.style.display = 'none';
+        stage1SubSelect.required = false;
+        stage1SubSelect.value = ''; // Clear selection when hidden
     }
 }
+
+// Handles adding a new player via the admin form
+function addPlayer(event) {
+    event.preventDefault(); // Prevent default form submission (page reload)
+
+    const nameInput = document.getElementById('playerName');
+    const stageSelect = document.getElementById('playerStage');
+    const stage1SubSelect = document.getElementById('stage1Sub');
+    const tabSelect = document.getElementById('playerTab');
+
+    const name = nameInput.value.trim();
+    const stage = stageSelect.value;
+    const stage1Sub = stage1SubSelect.value;
+    const tab = tabSelect.value;
+
+    // Basic validation
+    if (!name || !stage || !tab || (stage === 'stage-1' && !stage1Sub)) {
+        alert('Please fill in all required fields, including Stage 1 subdivision if applicable.');
+        return;
+    }
+
+    // Check if player already exists (case-insensitive to prevent duplicates)
+    if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+        alert('Player with this name already exists!');
+        return;
+    }
+
+    // Create player object
+    const player = {
+        id: Date.now(), // Unique ID (timestamp is simple for small apps)
+        name: name,
+        stage: stage,
+        stage1Sub: stage === 'stage-1' ? stage1Sub : '', // Only store sub-stage if stage is 'stage-1'
+        tab: tab,
+        fullStage: getFullStageText(stage, stage1Sub) // Pre-calculate for display
+    };
+
+    players.push(player); // Add new player to array
+    savePlayers();       // Save updated array to localStorage
+    updatePlayerList();  // Re-render player list in admin panel
+    updateLeaderboards(); // Re-render main view leaderboards
+    clearForm();         // Clear the form fields
+    alert('Player added successfully!');
+}
+
+// Handles deleting a player
+function deletePlayer(id) {
+    if (confirm('Are you sure you want to delete this player?')) {
+        players = players.filter(p => p.id !== id); // Remove player by ID
+        savePlayers();      // Save updated array
+        updatePlayerList(); // Re-render admin list
+        updateLeaderboards(); // Re-render main views
+    }
+}
+
+// Clears the add player form and resets options
+function clearForm() {
+    document.getElementById('addPlayerForm').reset(); // Correct form ID
+    updateStageOptions(); // Ensures Stage 1 options are hidden after clearing
+}
+
+// Updates the list of players displayed in the Admin Panel's "Manage Existing Players" section
+function updatePlayerList() {
+    const managePlayerList = document.getElementById('managePlayerList');
+    // Ensure element exists before trying to manipulate it
+    if (!managePlayerList) {
+        console.error("Element with ID 'managePlayerList' not found.");
+        return;
+    }
+
+    if (players.length === 0) {
+        managePlayerList.innerHTML = '<div style="text-align: center; color: #666; padding: 2rem;">No players added yet</div>';
+        return;
+    }
+
+    // Generate HTML for each player in the manage list
+    managePlayerList.innerHTML = players.map(player => {
+        // Convert 'tab' value for display in admin panel
+        let tabDisplay = '';
+        if (player.tab === 'tierView') tabDisplay = 'Tier View Only';
+        else if (player.tab === 'leaderboardView') tabDisplay = 'Leaderboard View Only';
+        else if (player.tab === 'both') tabDisplay = 'Both Views';
+
+        return `
+            <div class="player-item">
+                <div class="player-info-admin">
+                    <div class="player-name-admin">${player.name}</div>
+                    <div class="player-stage-admin">(${player.fullStage}) - ${tabDisplay}</div>
+                </div>
+                <button class="btn btn-danger" onclick="deletePlayer(${player.id})">Delete</button>
+            </div>
+        `;
+    }).join('');
+}
+
+// --- Main View Rendering Functions ---
+
+// Main function to update both main view leaderboards
+function updateLeaderboards() {
+    renderLeaderboardView(); // Update the global leaderboard
+    renderTierView();       // Update the tiered view
+}
+
+// Renders players to the Global Leaderboard View
+function renderLeaderboardView() {
+    const leaderboardContainer = document.getElementById('globalLeaderboard');
+    if (!leaderboardContainer) {
+        console.error("Element with ID 'globalLeaderboard' not found.");
+        return;
+    }
+
+    // Store the header HTML to re-insert it
+    const headerHTML = `
+        <div class="leaderboard-header">
+            <div>Rank</div>
+            <div>Player</div>
+            <div>Stage</div>
+        </div>
+    `;
+
+    // Filter players that should appear in the leaderboard
+    const leaderboardPlayers = players.filter(p => p.tab === 'leaderboardView' || p.tab === 'both');
+    // Sort players based on their stage rank (lowest rank number = highest position)
+    leaderboardPlayers.sort((a, b) => getStageRank(a.stage, a.stage1Sub) - getStageRank(b.stage, b.stage1Sub));
+
+    if (leaderboardPlayers.length === 0) {
+        // Display placeholder if no players
+        leaderboardContainer.innerHTML = `
+            ${headerHTML}
+            <div class="player-row">
+                <div class="rank other">-</div>
+                <div class="player-info">
+                    <div class="player-avatar">?</div>
+                    <div class="player-details">
+                        <h3>No players yet!</h3>
+                    </div>
+                </div>
+                <div class="stage-info">
+                    <span class="stage-badge stage-3">Add players via Admin Panel</span>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    // Generate HTML for each player row
+    const playersHTML = leaderboardPlayers.map((player, index) => {
+        // Determine rank class for styling (top1, top2, top3, other)
+        const rankClass = index === 0 ? 'top1' : index === 1 ? 'top2' : index === 2 ? 'top3' : 'other';
+        const initials = getInitials(player.name); // Get player initials for avatar
+
+        return `
+            <div class="player-row">
+                <div class="rank ${rankClass}">${index + 1}</div>
+                <div class="player-info">
+                    <div class="player-avatar">${initials}</div>
+                    <div class="player-details">
+                        <h3>${player.name}</h3>
+                    </div>
+                </div>
+                <div class="stage-info">
+                    <span class="stage-badge ${getStageClass(player.stage, player.stage1Sub)}">${player.fullStage}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Update the container with the header and all player rows
+    leaderboardContainer.innerHTML = headerHTML + playersHTML;
+}
+
+// Renders players to the Tier View
+function renderTierView() {
+    // Filter players that should appear in the tier view
+    const tierViewPlayers = players.filter(p => p.tab === 'tierView' || p.tab === 'both');
+
+    // Map stage keys to their corresponding DOM container IDs
+    const tierContainers = {
+        'stage-0': document.getElementById('tierStage0'),
+        'stage-1': document.getElementById('tierStage1'),
+        'stage-2': document.getElementById('tierStage2'),
+        'stage-3': document.getElementById('tierStage3')
+    };
+
+    // Clear all tier columns first and add empty message
+    for (const stageKey in tierContainers) {
+        if (tierContainers[stageKey]) {
+            tierContainers[stageKey].innerHTML = '<div class="empty-tier">No players yet.</div>';
+        }
+    }
+
+    // Populate tier columns with relevant players
+    tierViewPlayers.forEach(player => {
+        const initials = getInitials(player.name);
+        const playerHTML = `
+            <div class="tier-player">
+                <div class="tier-avatar">${initials}</div>
+                <div class="tier-player-name">${player.name}</div>
+            </div>
+        `;
+
+        const targetContainer = tierContainers[player.stage]; // Get the specific container for this player's stage
+        if (targetContainer) {
+            // If the container currently shows "No players yet", clear it
+            if (targetContainer.querySelector('.empty-tier')) {
+                targetContainer.innerHTML = '';
+            }
+            targetContainer.innerHTML += playerHTML; // Add player HTML
+        }
+    });
+}
+
+// --- Tab Switching Logic ---
+
+// Handles switching between "Tier View" and "Leaderboard View"
+function switchTab(clickedTabElement) {
+    // 1. Hide all tab content sections
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // 2. Remove 'active' class from all tab buttons
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+
+    // 3. Get the ID of the content section to show from the clicked tab's data attribute
+    const targetTabId = clickedTabElement.dataset.tabTarget;
+    if (targetTabId) {
+        document.getElementById(targetTabId).classList.add('active'); // Show the target content
+    }
+
+    // 4. Add 'active' class to the clicked tab button itself
+    clickedTabElement.classList.add('active');
+}
+
+// --- Event Listeners & Initial Page Load ---
+
+// Ensures all HTML is loaded before running JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Load any saved player data from localStorage
+    loadPlayers();
+
+    // 2. Attach Event Listeners for Admin Panel Buttons
+    document.querySelector('.admin-btn').addEventListener('click', toggleAdmin);
+    document.getElementById('closeAdminBtn').addEventListener('click', toggleAdmin);
+
+    // 3. Attach Event Listener for Stage Dropdown in Admin Panel (to show/hide sub-options)
+    document.getElementById('playerStage').addEventListener('change', updateStageOptions);
+
+    // 4. Attach Event Listener for the Add Player Form Submission
+    document.getElementById('addPlayerForm').addEventListener('submit', addPlayer);
+
+    // 5. Attach Event Listeners for Tab Switching Buttons
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            switchTab(this); // 'this' refers to the clicked tab element
+        });
+    });
+
+    // 6. Initial Render of content when the page first loads
+    updatePlayerList(); // Render players in the admin panel's management list
+    updateLeaderboards(); // Render players in the main Tier and Leaderboard views
+
+    // Optional: Ensure a default tab is active if your HTML doesn't guarantee it.
+    // This part is less critical if you already have 'active' class on default tab in index.html
+    const defaultActiveTab = document.querySelector('.tab.active');
+    const defaultActiveContent = document.querySelector('.tab-content.active');
+    if (!defaultActiveTab || !defaultActiveContent) {
+        // If for some reason no active tab is set in HTML, default to Tier View
+        document.querySelector('.tab[data-tab-target="tierView"]').classList.add('active');
+        document.getElementById('tierView').classList.add('active');
+    }
+});
