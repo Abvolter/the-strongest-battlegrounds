@@ -19,37 +19,37 @@
 
     <main class="container">
         <div class="tabs">
-            <div class="tab active" data-tab-target="tierView">Tier View</div>
+            <div class="tab active" data-tab-target="tierView">Stages</div>
             <div class="tab" data-tab-target="leaderboardView">Leaderboard View</div>
         </div>
 
         <div id="tierView" class="tab-content active">
-            <h2>Tier List</h2>
+            <h2>Stages List</h2>
             <p style="text-align: center; margin-bottom: 1rem; color: #ccc;">Players categorized by their overall performance and stage.</p>
             <div class="tier-grid">
                 <div class="tier-column">
-                    <div class="tier-header stage-0-header">Stage 0 - Legendary</div>
+                    <div class="tier-header stage-0-header">Stage 0</div>
                     <div class="tier-players" id="tierStage0">
                         <div class="empty-tier">No players yet.</div>
                     </div>
                 </div>
 
                 <div class="tier-column">
-                    <div class="tier-header stage-1-header">Stage 1 - Elite</div>
+                    <div class="tier-header stage-1-header">Stage 1</div>
                     <div class="tier-players" id="tierStage1">
                         <div class="empty-tier">No players yet.</div>
                     </div>
                 </div>
 
                 <div class="tier-column">
-                    <div class="tier-header stage-2-header">Stage 2 - Skilled</div>
+                    <div class="tier-header stage-2-header">Stage 2</div>
                     <div class="tier-players" id="tierStage2">
                         <div class="empty-tier">No players yet.</div>
                     </div>
                 </div>
 
                 <div class="tier-column">
-                    <div class="tier-header stage-3-header">Stage 3 - Novice</div>
+                    <div class="tier-header stage-3-header">Stage 3</div>
                     <div class="tier-players" id="tierStage3">
                         <div class="empty-tier">No players yet.</div>
                     </div>
@@ -121,7 +121,7 @@
                     <label for="playerTab" class="form-label">Show in:</label>
                     <select id="playerTab" class="form-select" required>
                         <option value="">Select Tab</option>
-                        <option value="tierView">Tier View Only</option>
+                        <option value="tierView">Stages Only</option>
                         <option value="leaderboardView">Leaderboard View Only</option>
                         <option value="both">Both Views</option>
                     </select>
