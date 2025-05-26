@@ -13,7 +13,7 @@
         <div class="container">
             <h1 class="logo">PLAYER RANKINGS</h1>
             <p class="subtitle">See who dominates the game!</p>
-            <p class="description">Welcome to the official player ranking system. Explore the top players by tiers or see the full leaderboard to track their progress.</p>
+            <p class="description">Welcome to the official player ranking system. Explore the top players by stages or see the full leaderboard to track their progress.</p>
         </div>
     </header>
 
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="stage-info">
-                        <span class="stage-badge stage-3">Add players via Admin Panel</span>
+                        <span class="stage-badge stage-3-low-solid">Add players via Admin Panel</span>
                     </div>
                 </div>
             </div>
@@ -99,15 +99,15 @@
                     <label for="playerStage" class="form-label">Player Stage:</label>
                     <select id="playerStage" class="form-select" required>
                         <option value="">Select Stage</option>
-                        <option value="stage-0">Stage 0 - Legendary</option>
-                        <option value="stage-1">Stage 1 - Elite</option>
-                        <option value="stage-2">Stage 2 - Skilled</option>
-                        <option value="stage-3">Stage 3 - Novice</option>
+                        <option value="stage-0">Stage 0</option>
+                        <option value="stage-1">Stage 1</option>
+                        <option value="stage-2">Stage 2</option>
+                        <option value="stage-3">Stage 3</option>
                     </select>
                 </div>
-                <div class="form-group" id="stage1Options" style="display: none;">
-                    <label for="stage1Sub" class="form-label">Stage 1 Subdivision:</label>
-                    <select id="stage1Sub" class="form-select">
+                <div class="form-group" id="stageSubdivisionOptions" style="display: none;">
+                    <label for="playerSubdivision" class="form-label">Stage Subdivision:</label>
+                    <select id="playerSubdivision" class="form-select">
                         <option value="">Select Subdivision</option>
                         <option value="high-strong">High - Strong</option>
                         <option value="high-solid">High - Solid</option>
