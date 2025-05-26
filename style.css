@@ -1,72 +1,137 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #fff;
-  color: #222;
-  margin: 0;
-  padding: 20px;
-  text-align: center;
-}
+</style>
+</head>
+<body>
+    <button class="admin-btn" onclick="toggleAdmin()">Admin Panel</button>
 
-h1 {
-  margin-bottom: 20px;
-}
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-content">
+            <div class="admin-header">
+                <div class="admin-title">Admin Panel</div>
+                <button class="close-btn" onclick="toggleAdmin()">Close</button>
+            </div>
 
-.tabs {
-  margin-bottom: 20px;
-}
+            <form id="playerForm" onsubmit="addPlayer(event)">
+                <div class="form-group">
+                    <label class="form-label">Player Name</label>
+                    <input type="text" class="form-input" id="playerName" required>
+                </div>
 
-button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
+                <div class="form-group">
+                    <label class="form-label">Stage</label>
+                    <select class="form-select" id="playerStage" onchange="updateStageOptions()" required>
+                        <option value="">Select Stage</option>
+                        <option value="stage-0">Stage 0</option>
+                        <option value="stage-1">Stage 1</option>
+                        <option value="stage-2">Stage 2</option>
+                        <option value="stage-3">Stage 3</option>
+                    </select>
+                </div>
 
-#content {
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: left;
-}
+                <div class="form-group" id="stage1Options" style="display: none;">
+                    <label class="form-label">Stage 1 Subdivision</label>
+                    <select class="form-select" id="stage1Sub">
+                        <option value="">Select Subdivision</option>
+                        <option value="high-strong">High Strong</option>
+                        <option value="high-solid">High Solid</option>
+                        <option value="high-weak">High Weak</option>
+                        <option value="mid-strong">Mid Strong</option>
+                        <option value="mid-solid">Mid Solid</option>
+                        <option value="mid-weak">Mid Weak</option>
+                        <option value="low-strong">Low Strong</option>
+                        <option value="low-solid">Low Solid</option>
+                        <option value="low-weak">Low Weak</option>
+                    </select>
+                </div>
 
-/* Leaderboard rows */
-.player-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 16px;
-  margin: 6px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  color: #333;
-}
+                <div class="form-group">
+                    <label class="form-label">Tab</label>
+                    <select class="form-select" id="playerTab" required>
+                        <option value="">Select Tab</option>
+                        <option value="overall">Overall</option>
+                        <option value="tsbg">TSBG GEO Stages</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
 
-.player-name {
-  font-size: 16px;
-}
+                <button type="submit" class="btn btn-success">Add Player</button>
+                <button type="button" class="btn btn-primary" onclick="clearForm()">Clear Form</button>
+            </form>
 
-.player-score {
-  font-size: 14px;
-  color: #666;
-}
+            <div style="margin-top: 2rem;">
+                <h3 style="color: #ffd700; margin-bottom: 1rem;">Current Players</h3>
+                <div class="player-list" id="playerList">
+                    <div style="text-align: center; color: #666; padding: 2rem;">No players added yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-/* Stages view */
-.stage-column {
-  margin-bottom: 30px;
-}
+    <div class="header">
+        <div class="logo">RANKINGS</div>
+        <div class="subtitle">Player Leaderboard</div>
+        <div class="description">
+            Players ranked by their stage achievements, showcasing skill and dedication across all game modes.
+        </div>
+    </div>
 
-.stage-title {
-  font-weight: bold;
-  margin-bottom: 10px;
-  font-size: 18px;
-}
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('overall')">Overall</div>
+        <div class="tab" onclick="switchTab('tsbg')">TSBG GEO Stages</div>
+    </div>
 
-.player {
-  margin: 5px 0;
-  padding: 5px 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
+    <div class="container">
+        <div id="overall" class="tab-content active">
+            <div class="leaderboard">
+                <div class="leaderboard-header">
+                    <div>#</div>
+                    <div>PLAYER</div>
+                    <div>STAGE</div>
+                </div>
+                
+                <div class="player-row">
+                    <div class="rank top1">1</div>
+                    <div class="player-info">
+                        <div class="player-avatar">?</div>
+                        <div class="player-details">
+                            <h3>Add your clan members here</h3>
+                        </div>
+                    </div>
+                    <div class="stage-info">
+                        <span class="stage-badge stage-0">Stage 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tsbg" class="tab-content">
+            <div class="tier-grid">
+                <div class="tier-column">
+                    <div class="tier-header stage-0-header">Stage 0</div>
+                    <div class="tier-players">
+                        <div class="empty-tier">No players yet</div>
+                    </div>
+                </div>
+
+                <div class="tier-column">
+                    <div class="tier-header stage-1-header">Stage 1</div>
+                    <div class="tier-players">
+                        <div class="empty-tier">No players yet</div>
+                    </div>
+                </div>
+
+                <div class="tier-column">
+                    <div class="tier-header stage-2-header">Stage 2</div>
+                    <div class="tier-players">
+                        <div class="empty-tier">No players yet</div>
+                    </div>
+                </div>
+
+                <div class="tier-column">
+                    <div class="tier-header stage-3-header">Stage 3</div>
+                    <div class="tier-players">
+                        <div class="empty-tier">No players yet</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
