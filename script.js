@@ -20,56 +20,45 @@ function getInitials(name) {
     return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
 }
 
-// Combines stage and sub-stage into a readable string
-function getFullStageText(stage, stage1Sub) {
-    if (stage === 'stage-0') return 'Stage 0 - Legendary';
-    if (stage === 'stage-1') {
-        if (stage1Sub) {
-            const subText = stage1Sub.replace('-', ' '); // e.g., "high-strong" -> "high strong"
-            return `Stage 1 - ${subText.charAt(0).toUpperCase() + subText.slice(1)}`;
-        }
-        return 'Stage 1 - Elite'; // Fallback if no sub-stage selected for Stage 1
-    }
-    if (stage === 'stage-2') return 'Stage 2 - Skilled';
-    if (stage === 'stage-3') return 'Stage 3 - Novice';
-    return 'Unknown Stage';
+// Generates full stage text like "Stage 0 - High Strong" or "Stage 1 - Low Weak"
+function getFullStageText(stage, subdivision) {
+    if (!stage || !subdivision) return 'Unknown Stage';
+    
+    // Convert subdivision to a readable format (e.g., "high-strong" -> "High Strong")
+    const subText = subdivision.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    
+    return `${stage.replace('stage-', 'Stage ')} - ${subText}`;
 }
 
-// Returns the CSS class for the stage badge
-function getStageClass(stage, stage1Sub) {
-    if (stage === 'stage-0') return 'stage-0';
-    if (stage === 'stage-1') {
-        // Ensure the sub-stage part exists to form a valid class
-        return stage1Sub ? `stage-1-${stage1Sub}` : 'stage-1-high-strong'; // Default to a class if sub-stage is missing
-    }
-    if (stage === 'stage-2') return 'stage-2';
-    if (stage === 'stage-3') return 'stage-3';
-    return ''; // Return empty string for unknown stage
+// Returns the CSS class for the stage badge based on stage and subdivision
+function getStageClass(stage, subdivision) {
+    if (!stage || !subdivision) return ''; // Return empty if data is incomplete
+    return `${stage}-${subdivision}`;
 }
 
 // Returns a numerical rank for sorting players (lower number = higher rank)
-function getStageRank(stage, stage1Sub) {
-    const rankings = {
-        'stage-0': 1,
-        'stage-1-high-strong': 2,
-        'stage-1-high-solid': 3,
-        // No 'stage-1-high-weak' in your CSS, so removed.
-        'stage-1-mid-strong': 4,
-        'stage-1-mid-solid': 5,
-        // No 'stage-1-mid-weak' in your CSS, so removed.
-        'stage-1-low-strong': 6,
-        'stage-1-low-solid': 7,
-        // No 'stage-1-low-weak' in your CSS, so removed.
-        'stage-2': 8,
-        'stage-3': 9
+function getStageRank(stage, subdivision) {
+    // Define the ranking order for subdivisions (9 levels now)
+    const subdivisionRanks = {
+        'high-strong': 0.1,
+        'high-solid': 0.2,
+        'high-weak': 0.3,
+        'mid-strong': 0.4,
+        'mid-solid': 0.5,
+        'mid-weak': 0.6,
+        'low-strong': 0.7,
+        'low-solid': 0.8,
+        'low-weak': 0.9
     };
-    
-    // Construct the key for Stage 1 correctly
-    if (stage === 'stage-1' && stage1Sub) {
-        return rankings[`${stage}-${stage1Sub}`] || 999;
-    }
-    return rankings[stage] || 999; // Fallback for invalid stage or no sub-stage
+
+    const stageNumber = parseInt(stage.replace('stage-', ''), 10);
+    const subRank = subdivisionRanks[subdivision] || 0.99; // Default to a very low rank if subdivision is missing/invalid
+
+    // Combine stage number and subdivision rank for a unique sortable value
+    // E.g., Stage 0 High Strong = 0.1, Stage 1 High Strong = 1.1, Stage 0 Low Weak = 0.9
+    return stageNumber + subRank;
 }
+
 
 // --- Admin Panel Functions ---
 
@@ -79,24 +68,25 @@ function toggleAdmin() {
     panel.classList.toggle('active');
     // Clear form and update list when opening/closing
     if (!panel.classList.contains('active')) {
-        clearForm();
+        clearForm(); // Clear form when closing
     }
     updatePlayerList(); // Always update admin list when toggling
 }
 
-// Shows/hides Stage 1 subdivision options based on selected stage
+// Shows/hides Stage Subdivision options based on selected stage
 function updateStageOptions() {
     const stageSelect = document.getElementById('playerStage');
-    const stage1OptionsDiv = document.getElementById('stage1Options');
-    const stage1SubSelect = document.getElementById('stage1Sub');
+    const subdivisionOptionsDiv = document.getElementById('stageSubdivisionOptions'); // Corrected ID
+    const subdivisionSelect = document.getElementById('playerSubdivision'); // Corrected ID
 
-    if (stageSelect.value === 'stage-1') {
-        stage1OptionsDiv.style.display = 'block';
-        stage1SubSelect.required = true;
+    // Show subdivision options if any stage (0-3) is selected
+    if (stageSelect.value) { // Check if a stage is selected (not empty string)
+        subdivisionOptionsDiv.style.display = 'block';
+        subdivisionSelect.required = true;
     } else {
-        stage1OptionsDiv.style.display = 'none';
-        stage1SubSelect.required = false;
-        stage1SubSelect.value = ''; // Clear selection when hidden
+        subdivisionOptionsDiv.style.display = 'none';
+        subdivisionSelect.required = false;
+        subdivisionSelect.value = ''; // Clear selection when hidden
     }
 }
 
@@ -106,17 +96,17 @@ function addPlayer(event) {
 
     const nameInput = document.getElementById('playerName');
     const stageSelect = document.getElementById('playerStage');
-    const stage1SubSelect = document.getElementById('stage1Sub');
+    const subdivisionSelect = document.getElementById('playerSubdivision'); // Corrected ID
     const tabSelect = document.getElementById('playerTab');
 
     const name = nameInput.value.trim();
     const stage = stageSelect.value;
-    const stage1Sub = stage1SubSelect.value;
+    const subdivision = subdivisionSelect.value; // Corrected variable name
     const tab = tabSelect.value;
 
-    // Basic validation
-    if (!name || !stage || !tab || (stage === 'stage-1' && !stage1Sub)) {
-        alert('Please fill in all required fields, including Stage 1 subdivision if applicable.');
+    // Basic validation: subdivision is required if a stage is selected
+    if (!name || !stage || !tab || !subdivision) { // subdivision is now always required with a stage
+        alert('Please fill in all required fields.');
         return;
     }
 
@@ -131,9 +121,9 @@ function addPlayer(event) {
         id: Date.now(), // Unique ID (timestamp is simple for small apps)
         name: name,
         stage: stage,
-        stage1Sub: stage === 'stage-1' ? stage1Sub : '', // Only store sub-stage if stage is 'stage-1'
+        subdivision: subdivision, // Storing the selected subdivision
         tab: tab,
-        fullStage: getFullStageText(stage, stage1Sub) // Pre-calculate for display
+        fullStage: getFullStageText(stage, subdivision) // Pre-calculate for display
     };
 
     players.push(player); // Add new player to array
@@ -157,7 +147,7 @@ function deletePlayer(id) {
 // Clears the add player form and resets options
 function clearForm() {
     document.getElementById('addPlayerForm').reset(); // Correct form ID
-    updateStageOptions(); // Ensures Stage 1 options are hidden after clearing
+    updateStageOptions(); // Ensures Subdivision options are hidden after clearing
 }
 
 // Updates the list of players displayed in the Admin Panel's "Manage Existing Players" section
@@ -178,7 +168,7 @@ function updatePlayerList() {
     managePlayerList.innerHTML = players.map(player => {
         // Convert 'tab' value for display in admin panel
         let tabDisplay = '';
-        if (player.tab === 'tierView') tabDisplay = 'Tier View Only';
+        if (player.tab === 'tierView') tabDisplay = 'Stages Only';
         else if (player.tab === 'leaderboardView') tabDisplay = 'Leaderboard View Only';
         else if (player.tab === 'both') tabDisplay = 'Both Views';
 
@@ -199,7 +189,7 @@ function updatePlayerList() {
 // Main function to update both main view leaderboards
 function updateLeaderboards() {
     renderLeaderboardView(); // Update the global leaderboard
-    renderTierView();       // Update the tiered view
+    renderTierView();       // Update the Stages view
 }
 
 // Renders players to the Global Leaderboard View
@@ -222,7 +212,7 @@ function renderLeaderboardView() {
     // Filter players that should appear in the leaderboard
     const leaderboardPlayers = players.filter(p => p.tab === 'leaderboardView' || p.tab === 'both');
     // Sort players based on their stage rank (lowest rank number = highest position)
-    leaderboardPlayers.sort((a, b) => getStageRank(a.stage, a.stage1Sub) - getStageRank(b.stage, b.stage1Sub));
+    leaderboardPlayers.sort((a, b) => getStageRank(a.stage, a.subdivision) - getStageRank(b.stage, b.subdivision));
 
     if (leaderboardPlayers.length === 0) {
         // Display placeholder if no players
@@ -237,7 +227,7 @@ function renderLeaderboardView() {
                     </div>
                 </div>
                 <div class="stage-info">
-                    <span class="stage-badge stage-3">Add players via Admin Panel</span>
+                    <span class="stage-badge stage-3-low-solid">Add players via Admin Panel</span>
                 </div>
             </div>
         `;
@@ -260,7 +250,7 @@ function renderLeaderboardView() {
                     </div>
                 </div>
                 <div class="stage-info">
-                    <span class="stage-badge ${getStageClass(player.stage, player.stage1Sub)}">${player.fullStage}</span>
+                    <span class="stage-badge ${getStageClass(player.stage, player.subdivision)}">${player.fullStage}</span>
                 </div>
             </div>
         `;
@@ -270,7 +260,7 @@ function renderLeaderboardView() {
     leaderboardContainer.innerHTML = headerHTML + playersHTML;
 }
 
-// Renders players to the Tier View
+// Renders players to the Stages View
 function renderTierView() {
     // Filter players that should appear in the tier view
     const tierViewPlayers = players.filter(p => p.tab === 'tierView' || p.tab === 'both');
@@ -296,7 +286,8 @@ function renderTierView() {
         const playerHTML = `
             <div class="tier-player">
                 <div class="tier-avatar">${initials}</div>
-                <div class="tier-player-name">${player.name}</div>
+                <div class="tier-details"> <div class="tier-player-name">${player.name}</div>
+                    <div class="tier-player-stage">${player.fullStage}</div> </div>
             </div>
         `;
 
@@ -313,7 +304,7 @@ function renderTierView() {
 
 // --- Tab Switching Logic ---
 
-// Handles switching between "Tier View" and "Leaderboard View"
+// Handles switching between "Stages" and "Leaderboard View"
 function switchTab(clickedTabElement) {
     // 1. Hide all tab content sections
     const tabContents = document.querySelectorAll('.tab-content');
@@ -363,14 +354,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 6. Initial Render of content when the page first loads
     updatePlayerList(); // Render players in the admin panel's management list
-    updateLeaderboards(); // Render players in the main Tier and Leaderboard views
+    updateLeaderboards(); // Render players in the main Stages and Leaderboard views
 
     // Optional: Ensure a default tab is active if your HTML doesn't guarantee it.
     // This part is less critical if you already have 'active' class on default tab in index.html
     const defaultActiveTab = document.querySelector('.tab.active');
     const defaultActiveContent = document.querySelector('.tab-content.active');
     if (!defaultActiveTab || !defaultActiveContent) {
-        // If for some reason no active tab is set in HTML, default to Tier View
+        // If for some reason no active tab is set in HTML, default to Stages View
         document.querySelector('.tab[data-tab-target="tierView"]').classList.add('active');
         document.getElementById('tierView').classList.add('active');
     }
