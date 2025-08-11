@@ -1,125 +1,42 @@
-</style>
-</head>
-<body>
-    <div class="header">
-        <div class="logo">MCTIERS</div>
-        <div class="nav-center">
-            <div class="nav-item">
-                <span>🏠</span>
-                <span>Home</span>
-            </div>
-            <div class="nav-item active">
-                <span>🏆</span>
-                <span>Rankings</span>
-            </div>
-            <div class="nav-item">
-                <span>💬</span>
-                <span>Discords</span>
-            </div>
-        </div>
-        <div class="search-container">
-            <input type="text" class="search-box" placeholder="Search player..." oninput="searchPlayer(this.value)">
-            <button class="admin-btn" onclick="toggleAdmin()">Admin</button>
-        </div>
-    </div>
+body {
+    font-family: Arial, sans-serif;
+    background: #1e1e1e;
+    color: white;
+    margin: 0;
+}
 
-    <div class="main-content">
-        <div class="game-mode-tabs">
-            <button class="tab active" data-mode="overall">
-                <div class="tab-icon">🏆</div>
-                <div class="tab-label">Overall</div>
-            </button>
-            <button class="tab" data-mode="sword">
-                <div class="tab-icon">⚔️</div>
-                <div class="tab-label">Sword</div>
-            </button>
-        </div>
+nav {
+    background: #333;
+    padding: 10px;
+    display: flex;
+    gap: 15px;
+}
 
-        <div class="server-info">
-            <div class="server-badge">PVP</div>
-            <div class="server-badge">CLUB</div>
-            <span>SERVER IP</span>
-            <span class="server-ip">mcpvp.club</span>
-            <span style="color: #8b949e;">ℹ️</span>
-        </div>
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-        <div class="leaderboard-header">
-            <div>#</div>
-            <div>PLAYER</div>
-            <div>REGION</div>
-            <div>TIERS</div>
-        </div>
+main {
+    padding: 20px;
+}
 
-        <div class="leaderboard-body" id="leaderboard">
-            <!-- Players will be rendered here -->
-        </div>
-    </div>
+.player {
+    background: #222;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+}
 
-    <!-- Player Profile Modal -->
-    <div id="playerModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close-btn" onclick="closeModal()">&times;</span>
-                <div class="profile-avatar" id="modalAvatar"></div>
-                <div class="profile-name" id="modalName">Player Name</div>
-                <div class="profile-title" id="modalTitle">Combat Grandmaster</div>
-                <div class="profile-region">North America</div>
-            </div>
-            <div class="profile-body">
-                <div class="profile-position">
-                    <div class="position-info">
-                        <div class="position-label">🏆 OVERALL</div>
-                        <div class="position-points">(<span id="modalPoints">405</span> points)</div>
-                    </div>
-                    <div class="position-number" id="modalPosition">#1</div>
-                </div>
-                <div class="profile-tiers">
-                    <h3>TIERS</h3>
-                    <div class="profile-tier-display" id="modalTiers">
-                        <!-- Tier badges will be rendered here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-content">
-            <h2 style="color: #e2b714; margin-bottom: 1.5rem;">Admin Panel</h2>
-            <div class="admin-form">
-                <div class="form-group">
-                    <label class="form-label">Player Name:</label>
-                    <input type="text" class="form-input" id="playerName" placeholder="Enter player name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Points:</label>
-                    <input type="number" class="form-input" id="playerPoints" placeholder="Enter points">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Region:</label>
-                    <select class="form-select" id="playerRegion">
-                        <option value="NA">North America</option>
-                        <option value="EU">Europe</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Sword Tier:</label>
-                    <select class="form-select" id="swordTier">
-                        <option value="HT1">HT1</option>
-                        <option value="LT1">LT1</option>
-                        <option value="HT2">HT2</option>
-                        <option value="LT2">LT2</option>
-                        <option value="HT3">HT3</option>
-                        <option value="LT3">LT3</option>
-                        <option value="HT4">HT4</option>
-                        <option value="LT4">LT4</option>
-                    </select>
-                </div>
-                <div class="form-buttons">
-                    <button class="form-btn btn-primary" onclick="addPlayer()">Add/Update Player</button>
-                    <button class="form-btn btn-secondary" onclick="toggleAdmin()">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
+button {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background: #555;
+}
