@@ -3,20 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Rankings</title>
+    <title>SwordTiers - Rankings</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav>
-        <a href="index.html">🏆 Overall</a>
-        <a href="sword.html">⚔️ Sword</a>
-        <a href="admin.html">⚙️ Admin</a>
-    </nav>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>SWORDTIERS</h1>
+            </div>
+            <nav class="nav">
+                <div class="nav-item">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                    </svg>
+                    Home
+                </div>
+                <div class="nav-item">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M7.752.066a.5.5 0 0 1 .496 0l6.5 4a.5.5 0 0 1 0 .868l-6.5 4a.5.5 0 0 1-.496 0l-6.5-4a.5.5 0 0 1 0-.868l6.5-4zM1.592 4.5L8 8.1l6.408-3.6L8 .9 1.592 4.5z"/>
+                    </svg>
+                    Rankings
+                </div>
+            </nav>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search player..." class="search-input">
+                <div class="search-key">/</div>
+            </div>
+        </header>
 
-    <main>
-        <h1>Overall Rankings</h1>
-        <div id="player-list"></div>
-    </main>
+        <!-- Game Mode Tabs -->
+        <div class="game-modes">
+            <div class="mode-tab active" data-mode="overall">
+                <div class="mode-icon">🏆</div>
+                <span>Overall</span>
+            </div>
+            <div class="mode-tab" data-mode="sword">
+                <div class="mode-icon">⚔️</div>
+                <span>Sword</span>
+            </div>
+        </div>
+
+        <!-- Admin Panel Toggle -->
+        <div class="admin-toggle">
+            <button id="adminToggle" class="admin-btn">Admin Panel</button>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel hidden">
+            <h3>Admin Panel</h3>
+            <div class="admin-section">
+                <h4>Add Player</h4>
+                <input type="text" id="playerName" placeholder="Player name">
+                <input type="text" id="playerAvatar" placeholder="Avatar URL (optional)">
+                <select id="playerRank">
+                    <option value="Combat Grandmaster">Combat Grandmaster</option>
+                    <option value="Combat Master">Combat Master</option>
+                    <option value="Combat Ace">Combat Ace</option>
+                    <option value="Combat Expert">Combat Expert</option>
+                    <option value="Combat Veteran">Combat Veteran</option>
+                </select>
+                <select id="playerRegion">
+                    <option value="NA">NA</option>
+                    <option value="EU">EU</option>
+                    <option value="AS">AS</option>
+                    <option value="OCE">OCE</option>
+                </select>
+                <select id="playerMode">
+                    <option value="overall">Overall</option>
+                    <option value="sword">Sword</option>
+                </select>
+                <input type="number" id="playerPoints" placeholder="Points" min="0">
+                <button id="addPlayer" class="admin-btn">Add Player</button>
+            </div>
+            <div class="admin-section">
+                <h4>Remove Player</h4>
+                <select id="removePlayerSelect">
+                    <option value="">Select player to remove</option>
+                </select>
+                <button id="removePlayer" class="admin-btn danger">Remove Player</button>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard">
+            <div class="leaderboard-header">
+                <div class="header-col rank">#</div>
+                <div class="header-col player">PLAYER</div>
+                <div class="header-col region">REGION</div>
+                <div class="header-col tiers">TIERS</div>
+            </div>
+            <div id="leaderboardContent" class="leaderboard-content">
+                <!-- Leaderboard entries will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Server Info -->
+        <div class="server-info">
+            <div class="info-icon">ℹ️</div>
+            <span>Information</span>
+            <div class="server-ip">
+                <span class="server-label">SERVER IP</span>
+                <span class="server-address">github.dev</span>
+                <div class="discord-icon">💬</div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
