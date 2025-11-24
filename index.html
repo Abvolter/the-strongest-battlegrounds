@@ -1,1636 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TSB Tiers – Rankings</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    :root {
-      --bg-main: #050811;
-      --bg-elevated: #0b101c;
-      --bg-card: #111827;
-      --bg-card-soft: #151c2b;
-      --border-soft: #1f2937;
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
-      --accent-gold: #fbbf24;
-      --accent-red: #ef4444;
-      --accent-purple: #8b5cf6;
-      --accent-blue: #3b82f6;
-      --accent-green: #22c55e;
-      --accent-pink: #ec4899;
-      --accent-emerald: #34d399;
-      --accent-gray: #6b7280;
-      --radius-lg: 16px;
-      --radius-md: 10px;
-      --shadow-soft: 0 18px 40px rgba(0,0,0,0.45);
-      --transition-fast: 0.17s ease-out;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-      background: radial-gradient(circle at top left, #111827 0, #020617 40%, #000 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding: 0;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .app-shell {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 18px 16px 40px;
-    }
-
-    /* ───────── NAVBAR ───────── */
-
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 18px;
-      background: linear-gradient(to right, rgba(15,23,42,0.96), rgba(15,23,42,0.9));
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: var(--shadow-soft);
-      position: sticky;
-      top: 8px;
-      z-index: 20;
-      backdrop-filter: blur(16px);
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: radial-gradient(circle at top, #22c55e, #16a34a, #4ade80);
-      color: #111827;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-size: 13px;
-      box-shadow: 0 10px 25px rgba(16,185,129,0.5);
-    }
-
-    .logo span:last-child {
-      font-weight: 900;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-left: 4px;
-    }
-
-    .nav-link {
-      font-size: 13px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .nav-link span.icon {
-      font-size: 15px;
-    }
-
-    .nav-link.active,
-    .nav-link:hover {
-      background: rgba(31,41,55,0.9);
-      color: var(--text-main);
-      transform: translateY(-1px);
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .search-bar {
-      position: relative;
-    }
-
-    .search-bar input {
-      background: rgba(15,23,42,0.85);
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
-      padding: 7px 30px 7px 28px;
-      font-size: 13px;
-      color: var(--text-main);
-      outline: none;
-      width: 190px;
-    }
-
-    .search-bar input::placeholder {
-      color: var(--text-muted);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 9px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .search-hint {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 11px;
-      color: var(--text-muted);
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 1px 5px;
-    }
-
-    .admin-pill {
-      font-size: 12px;
-      padding: 6px 11px;
-      border-radius: 999px;
-      background: linear-gradient(to right, #6366f1, #a855f7);
-      color: white;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      box-shadow: 0 12px 30px rgba(79,70,229,0.5);
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
-    }
-
-    .admin-pill:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 34px rgba(79,70,229,0.7);
-    }
-
-    /* ───────── MAIN LAYOUT ───────── */
-
-    .main-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.25fr);
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    @media (max-width: 980px) {
-      .navbar {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .nav-links {
-        display: none;
-      }
-      .main-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    /* ───────── MODE TABS ───────── */
-
-    .mode-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-      overflow-x: auto;
-      padding-bottom: 2px;
-    }
-
-    .mode-tab {
-      flex: 0 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 11px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(30,64,175,0.3);
-      font-size: 12px;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .mode-tab-icon {
-      width: 16px;
-      height: 16px;
-      border-radius: 999px;
-      background-size: cover;
-      background-position: center;
-      opacity: 0.95;
-    }
-
-    .mode-tab.overall .mode-tab-icon {
-      background: radial-gradient(circle at 30% 0, #fbbf24, #f97316, #b45309);
-    }
-
-    .mode-tab.vanilla .mode-tab-icon {
-      background-image: url("assets/icon-vanilla.png");
-    }
-    .mode-tab.uhc .mode-tab-icon {
-      background-image: url("assets/icon-uhc.png");
-    }
-    .mode-tab.pot .mode-tab-icon {
-      background-image: url("assets/icon-pot.png");
-    }
-    .mode-tab.nethop .mode-tab-icon {
-      background-image: url("assets/icon-nethop.png");
-    }
-    .mode-tab.smp .mode-tab-icon {
-      background-image: url("assets/icon-smp.png");
-    }
-    .mode-tab.sword .mode-tab-icon {
-      background-image: url("assets/icon-sword.png");
-    }
-    .mode-tab.axe .mode-tab-icon {
-      background-image: url("assets/icon-axe.png");
-    }
-    .mode-tab.mace .mode-tab-icon {
-      background-image: url("assets/icon-mace.png");
-    }
-    .mode-tab.ltms .mode-tab-icon {
-      background-image: url("assets/icon-ltms.png");
-    }
-
-    .mode-tab.active {
-      background: radial-gradient(circle at top, rgba(56,189,248,0.2), rgba(15,23,42,0.95));
-      color: var(--text-main);
-      border-color: rgba(248,250,252,0.5);
-      transform: translateY(-1px);
-    }
-
-    /* ───────── LEADERBOARD ───────── */
-
-    .card {
-      background: radial-gradient(circle at top left, rgba(30,64,175,0.45), rgba(15,23,42,0.98));
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(30,64,175,0.65);
-      padding: 14px 14px 10px;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .card-title span.icon {
-      font-size: 17px;
-    }
-
-    .server-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.5);
-      font-size: 11px;
-    }
-
-    .server-pill span.host {
-      font-weight: 600;
-      color: var(--accent-pink);
-    }
-
-    .server-pill span.ip {
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 10px;
-      padding: 1px 4px;
-      border-radius: 4px;
-      background: rgba(15,23,42,0.9);
-      color: var(--text-main);
-      border: 1px solid rgba(148,163,184,0.4);
-    }
-
-    .leaderboard {
-      margin-top: 4px;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid rgba(31,41,55,0.85);
-      background: rgba(15,23,42,0.98);
-    }
-
-    .lb-header,
-    .lb-row {
-      display: grid;
-      grid-template-columns: 60px 1.6fr 0.8fr 2.1fr;
-      align-items: center;
-      gap: 4px;
-      padding: 8px 12px;
-      font-size: 12px;
-    }
-
-    .lb-header {
-      background: rgba(15,23,42,0.96);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-    }
-
-    .lb-row {
-      border-top: 1px solid rgba(17,24,39,0.9);
-      cursor: pointer;
-      background: linear-gradient(to right, rgba(15,23,42,0.96), rgba(15,23,42,0.9));
-      transition: background var(--transition-fast), transform var(--transition-fast);
-    }
-
-    .lb-row:nth-child(odd) {
-      background: linear-gradient(to right, rgba(17,24,39,0.98), rgba(15,23,42,0.93));
-    }
-
-    .lb-row:hover {
-      background: linear-gradient(to right, rgba(30,64,175,0.35), rgba(15,23,42,0.98));
-      transform: translateY(-1px);
-    }
-
-    .lb-pos {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .lb-pos-badge {
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.7);
-    }
-
-    .lb-pos-1 { background: radial-gradient(circle at 30% 0, #fcd34d, #f97316); color: #111827; }
-    .lb-pos-2 { background: radial-gradient(circle at 30% 0, #e5e7eb, #9ca3af); color: #111827; }
-    .lb-pos-3 { background: radial-gradient(circle at 30% 0, #f97316, #b45309); color: #111827; }
-    .lb-pos-default { background: rgba(31,41,55,0.95); color: var(--text-main); }
-
-    .lb-player {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .player-skin {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      background-size: cover;
-      background-position: center;
-      border: 1px solid rgba(148,163,184,0.7);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.75);
-      flex-shrink: 0;
-    }
-
-    .player-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-
-    .player-name {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .player-title {
-      font-size: 11px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .title-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 1px 6px;
-      border-radius: 999px;
-      font-size: 10px;
-    }
-
-    .title-grandmaster {
-      background: rgba(251,191,36,0.12);
-      border: 1px solid rgba(251,191,36,0.8);
-      color: #fde68a;
-    }
-
-    .title-master {
-      background: rgba(156,163,175,0.18);
-      border: 1px solid rgba(209,213,219,0.9);
-      color: #e5e7eb;
-    }
-
-    .title-ace {
-      background: rgba(248,113,113,0.14);
-      border: 1px solid rgba(248,113,113,0.9);
-      color: #fecaca;
-    }
-
-    .title-small-gif {
-      width: 16px;
-      height: 16px;
-      border-radius: 999px;
-      background-size: cover;
-      background-position: center;
-      background-image: url("assets/grandmaster.gif");
-      box-shadow: 0 0 18px rgba(251,191,36,0.7);
-    }
-
-    .lb-region {
-      justify-self: flex-start;
-    }
-
-    .region-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      border: 1px solid transparent;
-    }
-    .region-na {
-      background: rgba(239,68,68,0.16);
-      border-color: rgba(248,113,113,0.8);
-      color: #fecaca;
-    }
-    .region-eu {
-      background: rgba(22,163,74,0.18);
-      border-color: rgba(22,163,74,0.9);
-      color: #bbf7d0;
-    }
-    .region-other {
-      background: rgba(59,130,246,0.16);
-      border-color: rgba(59,130,246,0.8);
-      color: #bfdbfe;
-    }
-
-    .lb-tiers {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .tier-chip {
-      font-size: 10px;
-      padding: 2px 5px;
-      border-radius: 999px;
-      border: 1px solid rgba(55,65,81,0.9);
-      background: radial-gradient(circle at top, rgba(15,23,42,0.96), rgba(15,23,42,0.96));
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--text-muted);
-    }
-
-    .tier-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #6b7280;
-    }
-
-    .tier-chip.ht1 .tier-dot { background: var(--accent-gold); }
-    .tier-chip.ht2 .tier-dot { background: var(--accent-green); }
-    .tier-chip.ht3 .tier-dot { background: var(--accent-blue); }
-    .tier-chip.ht4 .tier-dot { background: var(--accent-purple); }
-    .tier-chip.ht5 .tier-dot { background: var(--accent-pink); }
-
-    .lb-empty {
-      padding: 12px;
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    /* ───────── SIDEBAR INFO ───────── */
-
-    .info-card {
-      background: radial-gradient(circle at top right, rgba(56,189,248,0.25), rgba(15,23,42,0.98));
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(56,189,248,0.5);
-      padding: 14px 16px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .info-section-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .points-list, .titles-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 12px;
-    }
-
-    .tier-points-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .tier-label {
-      min-width: 56px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .tier-label.gold { color: var(--accent-gold); }
-    .tier-label.silver { color: #e5e7eb; }
-    .tier-label.bronze { color: #f97316; }
-
-    .point-pill {
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 11px;
-      border: 1px solid rgba(75,85,99,0.9);
-      background: rgba(15,23,42,0.96);
-      color: var(--text-muted);
-    }
-
-    .title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 6px 7px;
-      border-radius: 8px;
-      background: rgba(15,23,42,0.96);
-      border: 1px solid rgba(31,41,55,0.9);
-    }
-
-    .title-name {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .title-name span.glyph {
-      font-size: 14px;
-    }
-
-    .title-threshold {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .title-row.grandmaster .title-name { color: var(--accent-gold); }
-    .title-row.master .title-name { color: #e5e7eb; }
-    .title-row.ace .title-name { color: #fecaca; }
-    .title-row.specialist .title-name { color: var(--accent-purple); }
-    .title-row.cadet .title-name { color: #93c5fd; }
-    .title-row.novice .title-name { color: #a5b4fc; }
-    .title-row.rookie .title-name { color: var(--accent-gray); }
-
-    /* ───────── MODAL PLAYER PROFILE ───────── */
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.75);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-      backdrop-filter: blur(10px);
-    }
-
-    .modal {
-      width: 360px;
-      max-width: 94vw;
-      background: radial-gradient(circle at top, rgba(30,64,175,0.45), rgba(15,23,42,0.98));
-      border-radius: 20px;
-      border: 1px solid rgba(148,163,184,0.7);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.85);
-      padding: 16px 18px 14px;
-      position: relative;
-      animation: pop-in 0.18s ease-out;
-    }
-
-    @keyframes pop-in {
-      from { transform: scale(0.94) translateY(8px); opacity: 0; }
-      to { transform: scale(1) translateY(0); opacity: 1; }
-    }
-
-    .modal-close {
-      position: absolute;
-      right: 12px;
-      top: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      color: var(--text-muted);
-    }
-
-    .modal-header {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .modal-skin {
-      width: 54px;
-      height: 54px;
-      border-radius: 12px;
-      background-size: cover;
-      background-position: center;
-      border: 1px solid rgba(148,163,184,0.9);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.85);
-      flex-shrink: 0;
-    }
-
-    .modal-main {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .modal-name-inline {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .modal-title-pill {
-      margin-top: 3px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: rgba(15,23,42,0.95);
-      border: 1px solid rgba(148,163,184,0.8);
-    }
-
-    .modal-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 3px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .modal-section-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--text-muted);
-      margin-top: 10px;
-      margin-bottom: 4px;
-    }
-
-    .modal-tier-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
-    .badge-link {
-      font-size: 11px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.95);
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-    }
-
-    /* ───────── ADMIN PANEL ───────── */
-
-    .admin-panel-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.9);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 60;
-      backdrop-filter: blur(12px);
-    }
-
-    .admin-panel {
-      width: 620px;
-      max-width: 96vw;
-      max-height: 88vh;
-      overflow-y: auto;
-      background: radial-gradient(circle at top left, rgba(168,85,247,0.4), rgba(15,23,42,0.98));
-      border-radius: 22px;
-      border: 1px solid rgba(196,181,253,0.8);
-      box-shadow: 0 28px 80px rgba(0,0,0,0.9);
-      padding: 16px 18px 14px;
-      position: relative;
-    }
-
-    .admin-close {
-      position: absolute;
-      right: 14px;
-      top: 12px;
-      font-size: 20px;
-      cursor: pointer;
-      color: var(--text-muted);
-    }
-
-    .admin-header {
-      margin-bottom: 10px;
-    }
-
-    .admin-title {
-      font-size: 17px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .admin-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-
-    .admin-section {
-      margin-top: 10px;
-      padding: 10px 10px 8px;
-      border-radius: 14px;
-      background: rgba(15,23,42,0.96);
-      border: 1px solid rgba(55,65,81,0.9);
-    }
-
-    .admin-section-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .admin-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px 10px;
-      font-size: 12px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .field label {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .field input,
-    .field select {
-      background: rgba(17,24,39,0.98);
-      border-radius: 10px;
-      border: 1px solid rgba(55,65,81,0.9);
-      padding: 5px 8px;
-      font-size: 12px;
-      color: var(--text-main);
-      outline: none;
-    }
-
-    .field select {
-      cursor: pointer;
-    }
-
-    .field-row-wide {
-      grid-column: 1 / -1;
-    }
-
-    .btn-primary {
-      margin-top: 10px;
-      padding: 7px 13px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(to right, #22c55e, #3b82f6);
-      color: white;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 14px 40px rgba(34,197,94,0.6);
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 18px 46px rgba(34,197,94,0.8);
-    }
-
-    .admin-password-wrap {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .admin-password-wrap input {
-      flex: 1;
-    }
-
-    .badge {
-      border-radius: 999px;
-      padding: 3px 6px;
-      font-size: 10px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.9);
-      color: var(--text-muted);
-    }
-
-    .admin-hint {
-      font-size: 11px;
-      margin-top: 4px;
-      color: var(--text-muted);
-    }
-
-    .admin-error {
-      font-size: 11px;
-      margin-top: 4px;
-      color: var(--accent-red);
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <title>TSB Tiers – Rankings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- LINK TO EXTERNAL CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 <div class="app-shell">
 
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="nav-left">
-      <div class="logo">
-        <span>TSB</span><span>TIERS</span>
-      </div>
-      <div class="nav-links">
-        <div class="nav-link active"><span class="icon">🏆</span><span>Rankings</span></div>
-        <div class="nav-link"><span class="icon">🎮</span><span>Discords</span></div>
-        <div class="nav-link"><span class="icon">📄</span><span>Docs</span></div>
-      </div>
-    </div>
-    <div class="nav-right">
-      <div class="search-bar">
-        <span class="search-icon">🔍</span>
-        <input id="searchInput" type="text" placeholder="Search player… ( / )">
-        <span class="search-hint">/</span>
-      </div>
-      <button id="openAdmin" class="admin-pill">
-        <span>⚙</span> <span>Admin</span>
-      </button>
-    </div>
-  </header>
-
-  <main class="main-grid">
-
-    <!-- LEFT: LEADERBOARD -->
-    <section>
-      <div class="mode-tabs">
-        <button class="mode-tab overall active" data-mode="overall">
-          <div class="mode-tab-icon"></div><span>Overall</span>
-        </button>
-        <button class="mode-tab ltms" data-mode="ltms">
-          <div class="mode-tab-icon"></div><span>LTMs</span>
-        </button>
-        <button class="mode-tab vanilla" data-mode="vanilla">
-          <div class="mode-tab-icon"></div><span>Vanilla</span>
-        </button>
-        <button class="mode-tab uhc" data-mode="uhc">
-          <div class="mode-tab-icon"></div><span>UHC</span>
-        </button>
-        <button class="mode-tab pot" data-mode="pot">
-          <div class="mode-tab-icon"></"></div><span>Pot</span>
-        </button>
-        <button class="mode-tab nethop" data-mode="nethop">
-          <div class="mode-tab-icon"></div><span>NethOP</span>
-        </button>
-        <button class="mode-tab smp" data-mode="smp">
-          <div class="mode-tab-icon"></div><span>SMP</span>
-        </button>
-        <button class="mode-tab sword" data-mode="sword">
-          <div class="mode-tab-icon"></div><span>Sword</span>
-        </button>
-        <button class="mode-tab axe" data-mode="axe">
-          <div class="mode-tab-icon"></div><span>Axe</span>
-        </button>
-        <button class="mode-tab mace" data-mode="mace">
-          <div class="mode-tab-icon"></div><span>Mace</span>
-        </button>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <span class="icon">🏆</span>
-            <span id="leaderboardTitle">Overall Rankings</span>
-          </div>
-          <div class="server-pill">
-            <span class="host">YourServer</span>
-            <span class="ip" id="serverIp">play.yourserver.net</span>
-          </div>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo">
+                <span>TSB</span><span>TIERS</span>
+            </div>
+            <div class="nav-links">
+                <div class="nav-link active"><span class="icon">🏆</span><span>Rankings</span></div>
+                <div class="nav-link"><span class="icon">🎮</span><span>Discords</span></div>
+                <div class="nav-link"><span class="icon">📄</span><span>Docs</span></div>
+            </div>
         </div>
 
-        <div class="leaderboard" id="leaderboard">
-          <div class="lb-header">
-            <div>#</div>
-            <div>Player</div>
-            <div>Region</div>
-            <div>Tiers</div>
-          </div>
-          <div class="lb-empty" id="lbEmpty">
-            No players yet. Use the <b>Admin</b> panel to add players.
-          </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input id="searchInput" type="text" placeholder="Search player… ( / )">
+                <span class="search-hint">/</span>
+            </div>
+            <button id="openAdmin" class="admin-pill">
+                <span>⚙</span> <span>Admin</span>
+            </button>
         </div>
-      </div>
-    </section>
+    </header>
 
-    <!-- RIGHT: INFO -->
-    <aside>
-      <div class="info-card">
-        <div>
-          <div class="info-section-title">How ranking points are calculated</div>
-          <div class="points-list">
-            <div class="tier-points-row">
-              <div class="tier-label gold">Tier 1</div>
-              <div class="point-pill">HT1 – 60 pts</div>
-              <div class="point-pill">LT1 – 45 pts</div>
-            </div>
-            <div class="tier-points-row">
-              <div class="tier-label silver">Tier 2</div>
-              <div class="point-pill">HT2 – 30 pts</div>
-              <div class="point-pill">LT2 – 20 pts</div>
-            </div>
-            <div class="tier-points-row">
-              <div class="tier-label bronze">Tier 3</div>
-              <div class="point-pill">HT3 – 10 pts</div>
-              <div class="point-pill">LT3 – 6 pts</div>
-            </div>
-            <div class="tier-points-row">
-              <div class="tier-label">Tier 4</div>
-              <div class="point-pill">HT4 – 4 pts</div>
-              <div class="point-pill">LT4 – 3 pts</div>
-            </div>
-            <div class="tier-points-row">
-              <div class="tier-label">Tier 5</div>
-              <div class="point-pill">HT5 – 2 pts</div>
-              <div class="point-pill">LT5 – 1 pt</div>
-            </div>
-          </div>
-        </div>
+    <!-- MAIN LAYOUT -->
+    <main class="main-grid">
 
-        <div>
-          <div class="info-section-title">How to obtain achievement titles</div>
-          <div class="titles-list">
-            <div class="title-row grandmaster">
-              <div class="title-name"><span class="glyph">⚔</span>Combat Grandmaster</div>
-              <div class="title-threshold">400+ total points</div>
+        <!-- LEFT SIDE – LEADERBOARD -->
+        <section>
+
+            <!-- MODE TABS -->
+            <div class="mode-tabs">
+                <button class="mode-tab overall active" data-mode="overall"><div class="mode-tab-icon"></div><span>Overall</span></button>
+                <button class="mode-tab ltms" data-mode="ltms"><div class="mode-tab-icon"></div><span>LTMs</span></button>
+                <button class="mode-tab vanilla" data-mode="vanilla"><div class="mode-tab-icon"></div><span>Vanilla</span></button>
+                <button class="mode-tab uhc" data-mode="uhc"><div class="mode-tab-icon"></div><span>UHC</span></button>
+                <button class="mode-tab pot" data-mode="pot"><div class="mode-tab-icon"></div><span>Pot</span></button>
+                <button class="mode-tab nethop" data-mode="nethop"><div class="mode-tab-icon"></div><span>NethOP</span></button>
+                <button class="mode-tab smp" data-mode="smp"><div class="mode-tab-icon"></div><span>SMP</span></button>
+                <button class="mode-tab sword" data-mode="sword"><div class="mode-tab-icon"></div><span>Sword</span></button>
+                <button class="mode-tab axe" data-mode="axe"><div class="mode-tab-icon"></div><span>Axe</span></button>
+                <button class="mode-tab mace" data-mode="mace"><div class="mode-tab-icon"></div><span>Mace</span></button>
             </div>
-            <div class="title-row master">
-              <div class="title-name"><span class="glyph">◆</span>Combat Master</div>
-              <div class="title-threshold">250+ total points</div>
+
+            <!-- LEADERBOARD CARD -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="icon">🏆</span>
+                        <span id="leaderboardTitle">Overall Rankings</span>
+                    </div>
+                    <div class="server-pill">
+                        <span class="host">YourServer</span>
+                        <span class="ip" id="serverIp">play.yourserver.net</span>
+                    </div>
+                </div>
+
+                <div class="leaderboard" id="leaderboard">
+                    <div class="lb-header">
+                        <div>#</div>
+                        <div>Player</div>
+                        <div>Region</div>
+                        <div>Tiers</div>
+                    </div>
+                    <div class="lb-empty" id="lbEmpty">No players yet. Use the <b>Admin</b> panel to add players.</div>
+                </div>
             </div>
-            <div class="title-row ace">
-              <div class="title-name"><span class="glyph">◆</span>Combat Ace</div>
-              <div class="title-threshold">100+ total points</div>
+        </section>
+
+        <!-- RIGHT SIDE – INFO -->
+        <aside>
+            <div class="info-card">
+
+                <!-- POINTS RULES -->
+                <div>
+                    <div class="info-section-title">How ranking points are calculated</div>
+                    <div class="points-list">
+                        <div class="tier-points-row"><div class="tier-label gold">Tier 1</div><div class="point-pill">HT1 – 60 pts</div><div class="point-pill">LT1 – 45 pts</div></div>
+                        <div class="tier-points-row"><div class="tier-label silver">Tier 2</div><div class="point-pill">HT2 – 30 pts</div><div class="point-pill">LT2 – 20 pts</div></div>
+                        <div class="tier-points-row"><div class="tier-label bronze">Tier 3</div><div class="point-pill">HT3 – 10 pts</div><div class="point-pill">LT3 – 6 pts</div></div>
+                        <div class="tier-points-row"><div class="tier-label">Tier 4</div><div class="point-pill">HT4 – 4 pts</div><div class="point-pill">LT4 – 3 pts</div></div>
+                        <div class="tier-points-row"><div class="tier-label">Tier 5</div><div class="point-pill">HT5 – 2 pts</div><div class="point-pill">LT5 – 1 pt</div></div>
+                    </div>
+                </div>
+
+                <!-- TITLES RULES -->
+                <div>
+                    <div class="info-section-title">How to obtain achievement titles</div>
+                    <div class="titles-list">
+                        <div class="title-row grandmaster"><div class="title-name">⚔ Combat Grandmaster</div><div class="title-threshold">400+ total points</div></div>
+                        <div class="title-row master"><div class="title-name">◆ Combat Master</div><div class="title-threshold">250+ total points</div></div>
+                        <div class="title-row ace"><div class="title-name">◆ Combat Ace</div><div class="title-threshold">100+ total points</div></div>
+                        <div class="title-row specialist"><div class="title-name">◆ Combat Specialist</div><div class="title-threshold">50+ total points</div></div>
+                        <div class="title-row cadet"><div class="title-name">◆ Combat Cadet</div><div class="title-threshold">20+ total points</div></div>
+                        <div class="title-row novice"><div class="title-name">◆ Combat Novice</div><div class="title-threshold">10+ total points</div></div>
+                        <div class="title-row rookie"><div class="title-name">⬤ Rookie</div><div class="title-threshold">Less than 10 points</div></div>
+                    </div>
+                </div>
+
             </div>
-            <div class="title-row specialist">
-              <div class="title-name"><span class="glyph">◆</span>Combat Specialist</div>
-              <div class="title-threshold">50+ total points</div>
-            </div>
-            <div class="title-row cadet">
-              <div class="title-name"><span class="glyph">◆</span>Combat Cadet</div>
-              <div class="title-threshold">20+ total points</div>
-            </div>
-            <div class="title-row novice">
-              <div class="title-name"><span class="glyph">◆</span>Combat Novice</div>
-              <div class="title-threshold">10+ total points</div>
-            </div>
-            <div class="title-row rookie">
-              <div class="title-name"><span class="glyph">⬤</span>Rookie</div>
-              <div class="title-threshold">Less than 10 points</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </aside>
-  </main>
+        </aside>
+    </main>
 </div>
 
 <!-- PLAYER MODAL -->
 <div class="modal-backdrop" id="playerModalBackdrop">
-  <div class="modal" id="playerModal">
-    <div class="modal-close" id="playerModalClose">✕</div>
-    <div class="modal-header">
-      <div class="modal-skin" id="modalSkin"></div>
-      <div class="modal-main">
-        <div class="modal-name-inline" id="modalName"></div>
-        <div class="modal-title-pill" id="modalTitle"></div>
-        <div class="modal-sub">
-          <span id="modalRegion"></span> •
-          <button id="modalNameMC" class="badge-link">View on NameMC</button>
+    <div class="modal" id="playerModal">
+        <div class="modal-close" id="playerModalClose">✕</div>
+
+        <div class="modal-header">
+            <div class="modal-skin" id="modalSkin"></div>
+            <div class="modal-main">
+                <div class="modal-name-inline" id="modalName"></div>
+                <div class="modal-title-pill" id="modalTitle"></div>
+                <div class="modal-sub">
+                    <span id="modalRegion"></span> •
+                    <button id="modalNameMC" class="badge-link">View on NameMC</button>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="modal-section-label">Position</div>
+        <div class="badge-link" id="modalPosition"></div>
+
+        <div class="modal-section-label">Gamemode tiers</div>
+        <div class="modal-tier-list" id="modalTiers"></div>
     </div>
-
-    <div class="modal-section-label">Position</div>
-    <div class="badge-link" id="modalPosition"></div>
-
-    <div class="modal-section-label">Gamemode tiers</div>
-    <div class="modal-tier-list" id="modalTiers"></div>
-  </div>
 </div>
 
 <!-- ADMIN PANEL -->
 <div class="admin-panel-backdrop" id="adminBackdrop">
-  <div class="admin-panel">
-    <div class="admin-close" id="adminClose">✕</div>
-    <div class="admin-header">
-      <div class="admin-title">Admin Control Center</div>
-      <div class="admin-sub">
-        Add / edit players locally. Data is stored in your browser (<b>localStorage</b>), perfect for GitHub Pages.
-      </div>
-    </div>
+    <div class="admin-panel">
+        <div class="admin-close" id="adminClose">✕</div>
 
-    <div class="admin-section" id="adminAuthSection">
-      <div class="admin-section-title">Access</div>
-      <div class="admin-password-wrap">
-        <input type="password" id="adminPasswordInput" placeholder="Admin password (default: tsbadmin)">
-        <button id="adminUnlock" class="btn-primary">Unlock</button>
-      </div>
-      <div class="admin-hint">Change the password in the script constant <code>ADMIN_PASSWORD</code>.</div>
-      <div class="admin-error" id="adminError" style="display:none;">Wrong password.</div>
-    </div>
-
-    <div id="adminContent" style="display:none;">
-      <div class="admin-section">
-        <div class="admin-section-title">Add / Update player</div>
-        <div class="admin-grid">
-          <div class="field">
-            <label>Username</label>
-            <input id="pUsername" placeholder="Exact Minecraft name">
-          </div>
-          <div class="field">
-            <label>Region</label>
-            <select id="pRegion">
-              <option value="NA">North America (NA)</option>
-              <option value="EU">Europe (EU)</option>
-              <option value="OTHER">Other</option>
-            </select>
-          </div>
-
-          <div class="field field-row-wide">
-            <label>Gamemode tiers (HT1 / LT1 / … / NONE)</label>
-          </div>
-
-          <div class="field">
-            <label>Vanilla</label>
-            <select class="tier-select" data-mode="vanilla"></select>
-          </div>
-          <div class="field">
-            <label>UHC</label>
-            <select class="tier-select" data-mode="uhc"></select>
-          </div>
-          <div class="field">
-            <label>Pot</label>
-            <select class="tier-select" data-mode="pot"></select>
-          </div>
-          <div class="field">
-            <label>NethOP</label>
-            <select class="tier-select" data-mode="nethop"></select>
-          </div>
-          <div class="field">
-            <label>SMP</label>
-            <select class="tier-select" data-mode="smp"></select>
-          </div>
-          <div class="field">
-            <label>Sword</label>
-            <select class="tier-select" data-mode="sword"></select>
-          </div>
-          <div class="field">
-            <label>Axe</label>
-            <select class="tier-select" data-mode="axe"></select>
-          </div>
-          <div class="field">
-            <label>Mace</label>
-            <select class="tier-select" data-mode="mace"></select>
-          </div>
-          <div class="field">
-            <label>LTMs</label>
-            <select class="tier-select" data-mode="ltms"></select>
-          </div>
+        <div class="admin-header">
+            <div class="admin-title">Admin Control Center</div>
+            <div class="admin-sub">Add / edit players locally. Data is stored in localStorage.</div>
         </div>
 
-        <button id="savePlayer" class="btn-primary">Save player</button>
-        <div class="admin-hint">
-          If username already exists, it will be updated instead of duplicated.
+        <!-- ADMIN AUTH -->
+        <div class="admin-section" id="adminAuthSection">
+            <div class="admin-section-title">Access</div>
+            <div class="admin-password-wrap">
+                <input type="password" id="adminPasswordInput" placeholder="Admin password (default: tsbadmin)">
+                <button id="adminUnlock" class="btn-primary">Unlock</button>
+            </div>
+            <div class="admin-error" id="adminError" style="display:none;">Wrong password.</div>
         </div>
-      </div>
 
-      <div class="admin-section">
-        <div class="admin-section-title">Data</div>
-        <div class="admin-grid">
-          <div class="field field-row-wide">
-            <label>Export / Import JSON</label>
-            <textarea id="jsonArea" style="width:100%;height:100px;background:#020617;color:#e5e7eb;border-radius:10px;border:1px solid #4b5563;padding:6px 8px;font-size:11px;"></textarea>
-          </div>
+        <!-- ADMIN CONTENT -->
+        <div id="adminContent" style="display:none;">
+
+            <!-- ADD/UPDATE PLAYER -->
+            <div class="admin-section">
+                <div class="admin-section-title">Add / Update player</div>
+
+                <div class="admin-grid">
+
+                    <div class="field">
+                        <label>Username</label>
+                        <input id="pUsername" placeholder="Exact Minecraft name">
+                    </div>
+
+                    <div class="field">
+                        <label>Region</label>
+                        <select id="pRegion">
+                            <option value="NA">North America (NA)</option>
+                            <option value="EU">Europe (EU)</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="field field-row-wide">
+                        <label>Gamemode tiers</label>
+                    </div>
+
+                    <div class="field"><label>Vanilla</label><select class="tier-select" data-mode="vanilla"></select></div>
+                    <div class="field"><label>UHC</label><select class="tier-select" data-mode="uhc"></select></div>
+                    <div class="field"><label>Pot</label><select class="tier-select" data-mode="pot"></select></div>
+                    <div class="field"><label>NethOP</label><select class="tier-select" data-mode="nethop"></select></div>
+                    <div class="field"><label>SMP</label><select class="tier-select" data-mode="smp"></select></div>
+                    <div class="field"><label>Sword</label><select class="tier-select" data-mode="sword"></select></div>
+                    <div class="field"><label>Axe</label><select class="tier-select" data-mode="axe"></select></div>
+                    <div class="field"><label>Mace</label><select class="tier-select" data-mode="mace"></select></div>
+                    <div class="field"><label>LTMs</label><select class="tier-select" data-mode="ltms"></select></div>
+
+                </div>
+
+                <button id="savePlayer" class="btn-primary">Save player</button>
+            </div>
+
+            <!-- JSON IMPORT/EXPORT -->
+            <div class="admin-section">
+                <div class="admin-section-title">Data</div>
+                <textarea id="jsonArea" style="width:100%;height:100px;"></textarea>
+                <button id="exportJson" class="btn-primary">Export</button>
+                <button id="importJson" class="btn-primary">Import</button>
+            </div>
         </div>
-        <button id="exportJson" class="btn-primary">Export</button>
-        <button id="importJson" class="btn-primary" style="margin-left:6px;background:linear-gradient(to right,#f97316,#facc15);box-shadow:0 14px 40px rgba(245,158,11,0.6);">Import</button>
-        <div class="admin-hint">Paste the JSON into your repo as a backup, or move it between browsers.</div>
-      </div>
     </div>
-  </div>
 </div>
 
-<script>
-  // ───────── CONFIG ─────────
-  const ADMIN_PASSWORD = "tsbadmin";
+<!-- LINK TO EXTERNAL JAVASCRIPT -->
+<script src="script.js"></script>
 
-  const TIER_POINTS = {
-    "NONE": 0,
-    "HT1": 60, "LT1": 45,
-    "HT2": 30, "LT2": 20,
-    "HT3": 10, "LT3": 6,
-    "HT4": 4, "LT4": 3,
-    "HT5": 2, "LT5": 1
-  };
-
-  const MODES = ["vanilla","uhc","pot","nethop","smp","sword","axe","mace","ltms"];
-
-  const STORAGE_KEY = "tsb_tiers_players_v1";
-
-  let players = loadPlayers();
-  let currentMode = "overall";
-
-  // ───────── UTIL ─────────
-
-  function loadPlayers() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-      console.error("Failed to parse players", e);
-      return [];
-    }
-  }
-
-  function savePlayers() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
-    renderLeaderboard();
-  }
-
-  function computePointsForModeTier(tier) {
-    return TIER_POINTS[tier] || 0;
-  }
-
-  function computeTitle(total) {
-    if (total >= 400) return "Combat Grandmaster";
-    if (total >= 250) return "Combat Master";
-    if (total >= 100) return "Combat Ace";
-    if (total >= 50) return "Combat Specialist";
-    if (total >= 20) return "Combat Cadet";
-    if (total >= 10) return "Combat Novice";
-    return "Rookie";
-  }
-
-  function regionClass(region) {
-    if (region === "NA") return "region-na";
-    if (region === "EU") return "region-eu";
-    return "region-other";
-  }
-
-  function titleClass(title) {
-    if (title === "Combat Grandmaster") return "title-grandmaster";
-    if (title === "Combat Master") return "title-master";
-    if (title === "Combat Ace") return "title-ace";
-    return "";
-  }
-
-  // fetch avatar url via mc-heads
-  function avatarUrl(username) {
-    return "https://mc-heads.net/avatar/" + encodeURIComponent(username) + "/64";
-  }
-
-  function namemcUrl(username) {
-    return "https://namemc.com/profile/" + encodeURIComponent(username);
-  }
-
-  // ───────── LEADERBOARD RENDERING ─────────
-
-  function sortPlayersForMode(mode) {
-    if (mode === "overall") {
-      return [...players].sort((a,b) => b.totalPoints - a.totalPoints);
-    } else {
-      // sort by tier points for this mode, then overall
-      return [...players].sort((a,b) => {
-        const ta = computePointsForModeTier(a.modes[mode] || "NONE");
-        const tb = computePointsForModeTier(b.modes[mode] || "NONE");
-        if (tb !== ta) return tb - ta;
-        return b.totalPoints - a.totalPoints;
-      });
-    }
-  }
-
-  function renderLeaderboard() {
-    const lb = document.getElementById("leaderboard");
-    const existingRows = lb.querySelectorAll(".lb-row");
-    existingRows.forEach(r => r.remove());
-    const emptyRow = document.getElementById("lbEmpty");
-
-    const sorted = sortPlayersForMode(currentMode);
-    if (!sorted.length) {
-      emptyRow.style.display = "block";
-      return;
-    }
-    emptyRow.style.display = "none";
-
-    sorted.forEach((p, index) => {
-      const row = document.createElement("div");
-      row.className = "lb-row";
-      row.dataset.username = p.username;
-
-      // position
-      const pos = document.createElement("div");
-      pos.className = "lb-pos";
-      const badge = document.createElement("div");
-      const place = index + 1;
-      badge.classList.add("lb-pos-badge");
-      if (place === 1) badge.classList.add("lb-pos-1");
-      else if (place === 2) badge.classList.add("lb-pos-2");
-      else if (place === 3) badge.classList.add("lb-pos-3");
-      else badge.classList.add("lb-pos-default");
-      badge.textContent = place;
-      pos.appendChild(badge);
-
-      row.appendChild(pos);
-
-      // player
-      const playerCell = document.createElement("div");
-      playerCell.className = "lb-player";
-      const skin = document.createElement("div");
-      skin.className = "player-skin";
-      skin.style.backgroundImage = `url('${avatarUrl(p.username)}')`;
-      const meta = document.createElement("div");
-      meta.className = "player-meta";
-      const name = document.createElement("div");
-      name.className = "player-name";
-      name.textContent = p.username;
-
-      const title = document.createElement("div");
-      title.className = "player-title";
-      const titleBadge = document.createElement("div");
-      titleBadge.className = "title-badge " + titleClass(p.title);
-      titleBadge.textContent = p.title;
-      if (p.title === "Combat Grandmaster") {
-        const gif = document.createElement("div");
-        gif.className = "title-small-gif";
-        titleBadge.prepend(gif);
-      }
-      title.appendChild(titleBadge);
-      const pts = document.createElement("span");
-      pts.textContent = `${p.totalPoints} pts`;
-      title.appendChild(pts);
-
-      meta.appendChild(name);
-      meta.appendChild(title);
-
-      playerCell.appendChild(skin);
-      playerCell.appendChild(meta);
-      row.appendChild(playerCell);
-
-      // region
-      const regionCell = document.createElement("div");
-      regionCell.className = "lb-region";
-      const r = document.createElement("div");
-      r.className = "region-pill " + regionClass(p.region);
-      r.textContent = p.region;
-      regionCell.appendChild(r);
-      row.appendChild(regionCell);
-
-      // tiers
-      const tiersCell = document.createElement("div");
-      tiersCell.className = "lb-tiers";
-
-      MODES.forEach(mode => {
-        const t = p.modes[mode] || "NONE";
-        if (t === "NONE") return;
-        // if currentMode is not overall, show only this mode
-        if (currentMode !== "overall" && mode !== currentMode) return;
-
-        const chip = document.createElement("div");
-        chip.className = "tier-chip " + (t.startsWith("HT") ? ("ht" + t[2]) : "");
-        const dot = document.createElement("div");
-        dot.className = "tier-dot";
-        const label = document.createElement("span");
-        label.textContent = modeLabel(mode) + " " + t;
-        chip.appendChild(dot);
-        chip.appendChild(label);
-        tiersCell.appendChild(chip);
-      });
-
-      row.appendChild(tiersCell);
-
-      row.addEventListener("click", () => openPlayerModal(p, place));
-
-      lb.appendChild(row);
-    });
-  }
-
-  function modeLabel(mode) {
-    switch (mode) {
-      case "vanilla": return "Van";
-      case "uhc": return "UHC";
-      case "pot": return "Pot";
-      case "nethop": return "Neth";
-      case "smp": return "SMP";
-      case "sword": return "Sword";
-      case "axe": return "Axe";
-      case "mace": return "Mace";
-      case "ltms": return "LTM";
-      default: return "";
-    }
-  }
-
-  // ───────── PLAYER MODAL ─────────
-
-  function openPlayerModal(player, position) {
-    document.getElementById("modalSkin").style.backgroundImage = `url('${avatarUrl(player.username)}')`;
-    const nameEl = document.getElementById("modalName");
-    nameEl.textContent = player.username;
-
-    const titleEl = document.getElementById("modalTitle");
-    titleEl.innerHTML = "";
-    const badge = document.createElement("div");
-    badge.className = "title-badge " + titleClass(player.title);
-    if (player.title === "Combat Grandmaster") {
-      const gif = document.createElement("div");
-      gif.className = "title-small-gif";
-      badge.appendChild(gif);
-    }
-    const span = document.createElement("span");
-    span.textContent = player.title;
-    badge.appendChild(span);
-    titleEl.appendChild(badge);
-
-    document.getElementById("modalRegion").textContent = player.region;
-    const nameMcBtn = document.getElementById("modalNameMC");
-    nameMcBtn.onclick = () => window.open(namemcUrl(player.username), "_blank");
-
-    const posEl = document.getElementById("modalPosition");
-    posEl.textContent = `#${position} • ${player.totalPoints} points overall`;
-
-    const tiersWrap = document.getElementById("modalTiers");
-    tiersWrap.innerHTML = "";
-    MODES.forEach(mode => {
-      const t = player.modes[mode] || "NONE";
-      if (t === "NONE") return;
-      const chip = document.createElement("div");
-      chip.className = "tier-chip " + (t.startsWith("HT") ? ("ht" + t[2]) : "");
-      const dot = document.createElement("div");
-      dot.className = "tier-dot";
-      const label = document.createElement("span");
-      label.textContent = `${modeLabel(mode)} – ${t}`;
-      chip.appendChild(dot);
-      chip.appendChild(label);
-      tiersWrap.appendChild(chip);
-    });
-
-    document.getElementById("playerModalBackdrop").style.display = "flex";
-  }
-
-  function closePlayerModal() {
-    document.getElementById("playerModalBackdrop").style.display = "none";
-  }
-
-  // ───────── ADMIN PANEL ─────────
-
-  function openAdminPanel() {
-    document.getElementById("adminBackdrop").style.display = "flex";
-  }
-
-  function closeAdminPanel() {
-    document.getElementById("adminBackdrop").style.display = "none";
-  }
-
-  function initTierSelects() {
-    const selects = document.querySelectorAll(".tier-select");
-    selects.forEach(sel => {
-      sel.innerHTML = "";
-      const tiers = ["NONE","HT1","LT1","HT2","LT2","HT3","LT3","HT4","LT4","HT5","LT5"];
-      tiers.forEach(t => {
-        const opt = document.createElement("option");
-        opt.value = t;
-        opt.textContent = t;
-        sel.appendChild(opt);
-      });
-      sel.value = "NONE";
-    });
-  }
-
-  function handleSavePlayer() {
-    const username = document.getElementById("pUsername").value.trim();
-    const region = document.getElementById("pRegion").value;
-    if (!username) {
-      alert("Username required.");
-      return;
-    }
-
-    const modes = {};
-    document.querySelectorAll(".tier-select").forEach(sel => {
-      const mode = sel.dataset.mode;
-      modes[mode] = sel.value;
-    });
-
-    let total = 0;
-    MODES.forEach(mode => {
-      total += computePointsForModeTier(modes[mode] || "NONE");
-    });
-
-    const title = computeTitle(total);
-
-    const existingIndex = players.findIndex(p => p.username.toLowerCase() === username.toLowerCase());
-    const playerObj = {
-      username,
-      region,
-      modes,
-      totalPoints: total,
-      title
-    };
-
-    if (existingIndex >= 0) {
-      players[existingIndex] = playerObj;
-    } else {
-      players.push(playerObj);
-    }
-
-    savePlayers();
-    alert("Player saved. Total points: " + total + " (" + title + ")");
-  }
-
-  function exportJson() {
-    document.getElementById("jsonArea").value = JSON.stringify(players, null, 2);
-  }
-
-  function importJson() {
-    const raw = document.getElementById("jsonArea").value;
-    try {
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) throw new Error("Not array");
-      players = parsed;
-      savePlayers();
-      alert("Imported " + players.length + " players.");
-    } catch (e) {
-      alert("Invalid JSON.");
-    }
-  }
-
-  // ───────── MODE SWITCHING ─────────
-
-  function switchMode(mode) {
-    currentMode = mode;
-    document.querySelectorAll(".mode-tab").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.mode === mode);
-    });
-
-    const titleEl = document.getElementById("leaderboardTitle");
-    if (mode === "overall") titleEl.textContent = "Overall Rankings";
-    else titleEl.textContent = mode.toUpperCase() + " Leaderboard";
-
-    renderLeaderboard();
-  }
-
-  // ───────── SEARCH ─────────
-
-  function searchPlayer(name) {
-    const target = players.find(p => p.username.toLowerCase() === name.toLowerCase());
-    if (!target) {
-      alert("Player not found.");
-      return;
-    }
-    const sorted = sortPlayersForMode("overall");
-    const position = sorted.findIndex(p => p.username.toLowerCase() === target.username.toLowerCase()) + 1;
-    openPlayerModal(target, position || "?");
-  }
-
-  // ───────── INIT ─────────
-
-  document.addEventListener("DOMContentLoaded", () => {
-    initTierSelects();
-    renderLeaderboard();
-
-    document.getElementById("playerModalClose").onclick = closePlayerModal;
-    document.getElementById("playerModalBackdrop").addEventListener("click", (e) => {
-      if (e.target.id === "playerModalBackdrop") closePlayerModal();
-    });
-
-    document.getElementById("openAdmin").onclick = openAdminPanel;
-    document.getElementById("adminClose").onclick = closeAdminPanel;
-    document.getElementById("adminBackdrop").addEventListener("click", (e) => {
-      if (e.target.id === "adminBackdrop") closeAdminPanel();
-    });
-
-    document.getElementById("savePlayer").onclick = handleSavePlayer;
-    document.getElementById("exportJson").onclick = exportJson;
-    document.getElementById("importJson").onclick = importJson;
-
-    // Admin auth
-    document.getElementById("adminUnlock").onclick = () => {
-      const val = document.getElementById("adminPasswordInput").value;
-      if (val === ADMIN_PASSWORD) {
-        document.getElementById("adminAuthSection").style.display = "none";
-        document.getElementById("adminContent").style.display = "block";
-        document.getElementById("adminError").style.display = "none";
-      } else {
-        document.getElementById("adminError").style.display = "block";
-      }
-    };
-
-    // Mode tabs
-    document.querySelectorAll(".mode-tab").forEach(btn => {
-      btn.addEventListener("click", () => switchMode(btn.dataset.mode));
-    });
-
-    // Search
-    const searchInput = document.getElementById("searchInput");
-    searchInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        const val = searchInput.value.trim();
-        if (val) searchPlayer(val);
-      }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "/" && document.activeElement !== searchInput) {
-        e.preventDefault();
-        searchInput.focus();
-      }
-    });
-  });
-</script>
 </body>
 </html>
