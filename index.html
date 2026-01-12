@@ -1,222 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ka">
 <head>
     <meta charset="UTF-8">
-    <title>TSB Tiers – Rankings</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- LINK TO EXTERNAL CSS -->
+    <title>მამა პეტრეს მაღაზია</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-<div class="app-shell">
-
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="nav-left">
-            <div class="logo">
-                <span>TSB</span><span>TIERS</span>
-            </div>
-            <div class="nav-links">
-                <div class="nav-link active"><span class="icon">🏆</span><span>Rankings</span></div>
-                <div class="nav-link"><span class="icon">🎮</span><span>Discords</span></div>
-                <div class="nav-link"><span class="icon">📄</span><span>Docs</span></div>
-            </div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">მამა პეტრეს მაღაზია</div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
         </div>
+    </nav>
 
-        <div class="nav-right">
-            <div class="search-bar">
-                <span class="search-icon">🔍</span>
-                <input id="searchInput" type="text" placeholder="Search player… ( / )">
-                <span class="search-hint">/</span>
-            </div>
-            <button id="openAdmin" class="admin-pill">
-                <span>⚙</span> <span>Admin</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- MAIN LAYOUT -->
-    <main class="main-grid">
-
-        <!-- LEFT SIDE – LEADERBOARD -->
-        <section>
-
-            <!-- MODE TABS -->
-            <div class="mode-tabs">
-                <button class="mode-tab overall active" data-mode="overall"><div class="mode-tab-icon"></div><span>Overall</span></button>
-                <button class="mode-tab ltms" data-mode="ltms"><div class="mode-tab-icon"></div><span>LTMs</span></button>
-                <button class="mode-tab vanilla" data-mode="vanilla"><div class="mode-tab-icon"></div><span>Vanilla</span></button>
-                <button class="mode-tab uhc" data-mode="uhc"><div class="mode-tab-icon"></div><span>UHC</span></button>
-                <button class="mode-tab pot" data-mode="pot"><div class="mode-tab-icon"></div><span>Pot</span></button>
-                <button class="mode-tab nethop" data-mode="nethop"><div class="mode-tab-icon"></div><span>NethOP</span></button>
-                <button class="mode-tab smp" data-mode="smp"><div class="mode-tab-icon"></div><span>SMP</span></button>
-                <button class="mode-tab sword" data-mode="sword"><div class="mode-tab-icon"></div><span>Sword</span></button>
-                <button class="mode-tab axe" data-mode="axe"><div class="mode-tab-icon"></div><span>Axe</span></button>
-                <button class="mode-tab mace" data-mode="mace"><div class="mode-tab-icon"></div><span>Mace</span></button>
-            </div>
-
-            <!-- LEADERBOARD CARD -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <span class="icon">🏆</span>
-                        <span id="leaderboardTitle">Overall Rankings</span>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="circle-image">
+                    <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=600&h=600&fit=crop" alt="ძროხა">
+                </div>
+                
+                <h1 class="main-title">მამა პეტრეს მაღაზია</h1>
+                <p class="subtitle">შეიძინე ნატურალური რძე & ყველი და მაწონი.</p>
+                
+                <div class="products">
+                    <div class="product-card">
+                        <div class="product-icon">🥛</div>
+                        <h3>რძე</h3>
                     </div>
-                    <div class="server-pill">
-                        <span class="host">YourServer</span>
-                        <span class="ip" id="serverIp">play.yourserver.net</span>
+                    <div class="product-card">
+                        <div class="product-icon">🧀</div>
+                        <h3>ყველი</h3>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-icon">🥄</div>
+                        <h3>მაწონი</h3>
                     </div>
                 </div>
 
-                <div class="leaderboard" id="leaderboard">
-                    <div class="lb-header">
-                        <div>#</div>
-                        <div>Player</div>
-                        <div>Region</div>
-                        <div>Tiers</div>
-                    </div>
-                    <div class="lb-empty" id="lbEmpty">No players yet. Use the <b>Admin</b> panel to add players.</div>
-                </div>
+                <a href="contact.html" class="cta-button">
+                    გადადით კონტაქტის პეიჯზე და შეგვეხმიანეთ!
+                </a>
             </div>
         </section>
-
-        <!-- RIGHT SIDE – INFO -->
-        <aside>
-            <div class="info-card">
-
-                <!-- POINTS RULES -->
-                <div>
-                    <div class="info-section-title">How ranking points are calculated</div>
-                    <div class="points-list">
-                        <div class="tier-points-row"><div class="tier-label gold">Tier 1</div><div class="point-pill">HT1 – 60 pts</div><div class="point-pill">LT1 – 45 pts</div></div>
-                        <div class="tier-points-row"><div class="tier-label silver">Tier 2</div><div class="point-pill">HT2 – 30 pts</div><div class="point-pill">LT2 – 20 pts</div></div>
-                        <div class="tier-points-row"><div class="tier-label bronze">Tier 3</div><div class="point-pill">HT3 – 10 pts</div><div class="point-pill">LT3 – 6 pts</div></div>
-                        <div class="tier-points-row"><div class="tier-label">Tier 4</div><div class="point-pill">HT4 – 4 pts</div><div class="point-pill">LT4 – 3 pts</div></div>
-                        <div class="tier-points-row"><div class="tier-label">Tier 5</div><div class="point-pill">HT5 – 2 pts</div><div class="point-pill">LT5 – 1 pt</div></div>
-                    </div>
-                </div>
-
-                <!-- TITLES RULES -->
-                <div>
-                    <div class="info-section-title">How to obtain achievement titles</div>
-                    <div class="titles-list">
-                        <div class="title-row grandmaster"><div class="title-name">⚔ Combat Grandmaster</div><div class="title-threshold">400+ total points</div></div>
-                        <div class="title-row master"><div class="title-name">◆ Combat Master</div><div class="title-threshold">250+ total points</div></div>
-                        <div class="title-row ace"><div class="title-name">◆ Combat Ace</div><div class="title-threshold">100+ total points</div></div>
-                        <div class="title-row specialist"><div class="title-name">◆ Combat Specialist</div><div class="title-threshold">50+ total points</div></div>
-                        <div class="title-row cadet"><div class="title-name">◆ Combat Cadet</div><div class="title-threshold">20+ total points</div></div>
-                        <div class="title-row novice"><div class="title-name">◆ Combat Novice</div><div class="title-threshold">10+ total points</div></div>
-                        <div class="title-row rookie"><div class="title-name">⬤ Rookie</div><div class="title-threshold">Less than 10 points</div></div>
-                    </div>
-                </div>
-
-            </div>
-        </aside>
     </main>
-</div>
 
-<!-- PLAYER MODAL -->
-<div class="modal-backdrop" id="playerModalBackdrop">
-    <div class="modal" id="playerModal">
-        <div class="modal-close" id="playerModalClose">✕</div>
-
-        <div class="modal-header">
-            <div class="modal-skin" id="modalSkin"></div>
-            <div class="modal-main">
-                <div class="modal-name-inline" id="modalName"></div>
-                <div class="modal-title-pill" id="modalTitle"></div>
-                <div class="modal-sub">
-                    <span id="modalRegion"></span> •
-                    <button id="modalNameMC" class="badge-link">View on NameMC</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal-section-label">Position</div>
-        <div class="badge-link" id="modalPosition"></div>
-
-        <div class="modal-section-label">Gamemode tiers</div>
-        <div class="modal-tier-list" id="modalTiers"></div>
-    </div>
-</div>
-
-<!-- ADMIN PANEL -->
-<div class="admin-panel-backdrop" id="adminBackdrop">
-    <div class="admin-panel">
-        <div class="admin-close" id="adminClose">✕</div>
-
-        <div class="admin-header">
-            <div class="admin-title">Admin Control Center</div>
-            <div class="admin-sub">Add / edit players locally. Data is stored in localStorage.</div>
-        </div>
-
-        <!-- ADMIN AUTH -->
-        <div class="admin-section" id="adminAuthSection">
-            <div class="admin-section-title">Access</div>
-            <div class="admin-password-wrap">
-                <input type="password" id="adminPasswordInput" placeholder="Admin password (default: tsbadmin)">
-                <button id="adminUnlock" class="btn-primary">Unlock</button>
-            </div>
-            <div class="admin-error" id="adminError" style="display:none;">Wrong password.</div>
-        </div>
-
-        <!-- ADMIN CONTENT -->
-        <div id="adminContent" style="display:none;">
-
-            <!-- ADD/UPDATE PLAYER -->
-            <div class="admin-section">
-                <div class="admin-section-title">Add / Update player</div>
-
-                <div class="admin-grid">
-
-                    <div class="field">
-                        <label>Username</label>
-                        <input id="pUsername" placeholder="Exact Minecraft name">
-                    </div>
-
-                    <div class="field">
-                        <label>Region</label>
-                        <select id="pRegion">
-                            <option value="NA">North America (NA)</option>
-                            <option value="EU">Europe (EU)</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                    </div>
-
-                    <div class="field field-row-wide">
-                        <label>Gamemode tiers</label>
-                    </div>
-
-                    <div class="field"><label>Vanilla</label><select class="tier-select" data-mode="vanilla"></select></div>
-                    <div class="field"><label>UHC</label><select class="tier-select" data-mode="uhc"></select></div>
-                    <div class="field"><label>Pot</label><select class="tier-select" data-mode="pot"></select></div>
-                    <div class="field"><label>NethOP</label><select class="tier-select" data-mode="nethop"></select></div>
-                    <div class="field"><label>SMP</label><select class="tier-select" data-mode="smp"></select></div>
-                    <div class="field"><label>Sword</label><select class="tier-select" data-mode="sword"></select></div>
-                    <div class="field"><label>Axe</label><select class="tier-select" data-mode="axe"></select></div>
-                    <div class="field"><label>Mace</label><select class="tier-select" data-mode="mace"></select></div>
-                    <div class="field"><label>LTMs</label><select class="tier-select" data-mode="ltms"></select></div>
-
-                </div>
-
-                <button id="savePlayer" class="btn-primary">Save player</button>
-            </div>
-
-            <!-- JSON IMPORT/EXPORT -->
-            <div class="admin-section">
-                <div class="admin-section-title">Data</div>
-                <textarea id="jsonArea" style="width:100%;height:100px;"></textarea>
-                <button id="exportJson" class="btn-primary">Export</button>
-                <button id="importJson" class="btn-primary">Import</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- LINK TO EXTERNAL JAVASCRIPT -->
-<script src="script.js"></script>
-
+    <footer>
+        <p>© 2026 მამა პეტრეს მაღაზია. ყველა უფლება დაცულია.</p>
+    </footer>
 </body>
 </html>
